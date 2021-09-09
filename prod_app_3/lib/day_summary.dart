@@ -3,7 +3,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart';
 import 'event_adding_page.dart';
 import 'event.dart';
-import 'package:fl_chart/fl_chart.dart';
+// import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
 
 class DaySummary extends StatefulWidget {
@@ -52,12 +52,18 @@ class _DaySummaryState extends State<DaySummary> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add, color: Colors.white),
           backgroundColor: Colors.indigoAccent,
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) => EventAddingPage(
-                      events: widget.events,
-                    )),
-          ),
+          onPressed: () async {
+            final data = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EventAddingPage(
+                        events: widget.events,
+                      )),
+            );
+            setState(() {
+              widget.events = data;
+            });
+          },
         ));
   }
 }
@@ -69,35 +75,49 @@ class Arcs extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    print(events);
-    events.add(Event(
-        from: TimeOfDay(hour: 0, minute: 0),
-        to: TimeOfDay(hour: 12, minute: 0),
-        title: 'Ime'));
+    // print(events);
+    // print(events.length);
+    // print('length');
+    // events.add(Event(
+    //     from: TimeOfDay(hour: 14, minute: 0),
+    //     to: TimeOfDay(hour: 16, minute: 45),
+    //     title: 'Ime',
+    //     color: Colors.red
+    //     ));
 
-    print(events[0]);
-    var radStart, radEnd;
-    var temp = events[0].from;
-    var temp2 = events[0].to;
-    radStart = temp.hour * pi / 8 + temp.minute * pi / 720 - pi / 2;
-    radEnd = temp2.hour * pi / 8 + temp2.minute * pi / 720 - pi / 2;
-
-    print(radStart * 180 / pi);
-    print(radEnd * 180 / pi);
+    // print(events);
+    // print(events.length);
+    // print('length pol');
 
     var centerX = size.width / 2;
     var centerY = size.height / 2;
     var center = Offset(centerX, centerY);
     var radius = min(centerX, centerY);
 
-    var fillBrush = Paint()..color = Colors.pinkAccent;
     // var fillBrush2 = Paint()..color = Color(0xff303030);
     var fillBrush2 = Paint()..color = Colors.indigoAccent;
-
     Rect rect = Rect.fromCenter(center: center, width: 180, height: 180);
 
-    canvas.drawArc(rect, radStart, radEnd, true, fillBrush);
+    if (!events.isEmpty) {
+      for (int i = 0; i < events.length; i++) {
+        var radStart, radEnd;
+        var temp = events[i].from;
+        var temp2 = events[i].to;
+        radStart = temp.hour * pi / 12 + temp.minute * pi / 720 - pi / 2;
+        radEnd =
+            temp2.hour * pi / 12 + temp2.minute * pi / 720 - pi / 2 - radStart;
+        var fillBrush = Paint()..color = events[i].color!;
+        canvas.drawArc(rect, radStart, radEnd, true, fillBrush);
+      }
+    }
+
     canvas.drawCircle(center, radius, fillBrush2);
+    var fillBrush3 = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2
+      ..color = Colors.black;
+    canvas.drawCircle(center, radius, fillBrush3);
+    canvas.drawCircle(center, size.width - 8.5, fillBrush3);
   }
 
   @override

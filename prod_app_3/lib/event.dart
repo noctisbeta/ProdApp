@@ -4,13 +4,13 @@ class Event {
   final String title;
   final TimeOfDay from;
   final TimeOfDay to;
-  final Color? backgroundColor;
+  final Color? color;
 
   const Event({
     required this.title,
     required this.from,
     required this.to,
-    this.backgroundColor
+    this.color
   });
 
   String toString() {

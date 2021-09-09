@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:time_range_picker/time_range_picker.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -174,28 +175,29 @@ class _EventAddingPageState extends State<EventAddingPage> {
             context: context,
             builder: (BuildContext context) => AlertDialog(
                   title: Text('Pick Color'),
+                  contentPadding: EdgeInsets.all(10),
                   content: Column(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: BlockPicker(
-                            pickerColor: currentColor,
-                            onColorChanged: changeColor),
-                      ),
-                      TextButton(
-                        child: Text('SELECT'),
-                        onPressed: () => Navigator.of(context).pop(),
-                      )
+                      BlockPicker(
+                          pickerColor: currentColor,
+                          onColorChanged: changeColor),
                     ],
                   ),
+                  actions: [
+                    TextButton(
+                      child: Text('SELECT'),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
                 )),
       );
 
-  void confirmSubmission() {
+  void confirmSubmission() async {
     widget.events
-        ?.add(Event(title: nameCtl.text, from: fromTime!, to: toTime!));
-        print(widget.events);
-    Navigator.of(context).pop();
+        ?.add(Event(title: nameCtl.text, from: fromTime!, to: toTime!, color: currentColor!));
+    // print(widget.events);
+    print(widget.events);
+    print('pred confirm');
+    Navigator.pop(context, widget.events);
   }
-
 }
