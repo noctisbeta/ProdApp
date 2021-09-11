@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:prod_app_3/day_summary.dart';
+// import 'package:prod_app_3/day_summary.dart';
 import 'calendar_widget.dart';
-import 'event_editing_page.dart';
-import 'day_summary.dart';
+// import 'event_editing_page.dart';
+// import 'day_summary.dart';
 
 class Home extends StatefulWidget {
   const Home({ Key? key }) : super(key: key);
@@ -16,7 +16,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calendar'),
+        title: const Text('Calendar'),
         centerTitle: true,
       ),
       body: CalendarWidget(),

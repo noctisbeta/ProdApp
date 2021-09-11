@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           // scaffoldBackgroundColor: Colors.black,
           accentColor: Colors.indigoAccent,
           primaryColor: Colors.transparent),
-      home: Home(),
+      home: const Home(),
     );
   }
 }

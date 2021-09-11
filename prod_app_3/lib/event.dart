@@ -13,6 +13,7 @@ class Event {
     this.color
   });
 
+  @override
   String toString() {
     return title + from.toString() + to.toString();
   }
