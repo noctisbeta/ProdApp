@@ -193,11 +193,11 @@ class _EventAddingPageState extends State<EventAddingPage> {
       );
 
   void confirmSubmission() async {
-    widget.events
-        ?.add(Event(title: nameCtl.text, from: fromTime!, to: toTime!, color: currentColor!));
-    // print(widget.events);
-    print(widget.events);
-    print('pred confirm');
+    widget.events?.add(Event(
+        title: nameCtl.text,
+        from: fromTime!,
+        to: toTime!,
+        color: currentColor));
     Navigator.pop(context, widget.events);
   }
 }

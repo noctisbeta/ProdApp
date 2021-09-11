@@ -29,7 +29,8 @@ class _DaySummaryState extends State<DaySummary> {
         ),
         body: Column(
           children: [
-            Center(
+            Flexible(
+              flex: 1,
               child: Container(
                 child: Container(
                   width: 100,
@@ -46,7 +47,26 @@ class _DaySummaryState extends State<DaySummary> {
                 alignment: Alignment.center,
               ),
             ),
-            Text('PLACEHOLDER'),
+            Flexible(
+              flex: 2,
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 20,
+                        width: 20,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.red),
+                      ),
+                      SizedBox(width: 10),
+                      Text('Sleep')
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -117,7 +137,7 @@ class Arcs extends CustomPainter {
       ..strokeWidth = 2
       ..color = Colors.black;
     canvas.drawCircle(center, radius, fillBrush3);
-    canvas.drawCircle(center, size.width - 8.5, fillBrush3);
+    canvas.drawCircle(center, size.width - 9, fillBrush3);
   }
 
   @override
