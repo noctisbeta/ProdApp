@@ -92,8 +92,12 @@ class _DaySummaryState extends State<DaySummary> {
   List<Widget> toWidgetList() {
     if (events.isNotEmpty) {
       final List<Widget> list = <Widget>[];
+      final List<String> titles = <String>[];
       for (int i = 0; i < events.length; i++) {
-        list.add(legendEntry(events[i]));
+        if (!titles.contains(events[i].title)) {
+          titles.add(events[i].title);
+          list.add(legendEntry(events[i]));
+        }
       }
       return list;
     } else {
@@ -167,6 +171,32 @@ class Arcs extends CustomPainter {
       ..color = Colors.black;
     canvas.drawCircle(center, radius, fillBrush3);
     canvas.drawCircle(center, size.width - 8.8, fillBrush3);
+
+    final fillBrush4 = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2
+      ..color = Colors.black;
+
+    final fillBrush5 = Paint()
+      ..style = PaintingStyle.fill
+      ..strokeWidth = 2
+      ..color = Colors.black;
+
+    final currentTime = DateTime.now();
+    // print(currentTime.hour);
+    final currentTimeAngle =
+        currentTime.hour * pi / 12 + currentTime.minute * pi / 720 - pi / 2;
+    // canvas.translate(centerX, centerY);
+    // canvas.rotate(currentTimeAngle);
+    final hourX = centerX + cos(currentTimeAngle) * radius;
+    final hourY = centerY + sin(currentTimeAngle) * radius;
+    final hourXe = centerX + cos(currentTimeAngle) * 89;
+    final hourYe = centerX + sin(currentTimeAngle) * 89;
+
+    canvas.drawLine(Offset(hourX, hourY), Offset(hourXe, hourYe), fillBrush4);
+    canvas.drawCircle(Offset(hourXe, hourYe), 3, fillBrush5);
+
+    // canvas.drawArc(rect, currentTimeAngle, currentTimeAngle, true, fillBrush4);
   }
 
   @override
