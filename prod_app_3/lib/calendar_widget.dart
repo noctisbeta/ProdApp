@@ -12,8 +12,10 @@ class CalendarWidget extends StatelessWidget {
         initialSelectedDate: DateTime.now(),
         cellBorderColor: Colors.transparent,
         // onTap: (CalendarTapDetails a) => {log('a')},
-        onLongPress: (CalendarLongPressDetails dayInfo) => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => DaySummary(dayInfo: dayInfo)),
+        onLongPress: (CalendarLongPressDetails dayInfo) =>
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => DaySummary(dayInfo: dayInfo)),
             ));
   }
 }

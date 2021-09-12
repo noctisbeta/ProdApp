@@ -4,6 +4,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart';
 import 'event.dart';
 import 'event_adding_page.dart';
+import 'globals.dart';
 
 // import 'package:fl_chart/fl_chart.dart';
 
@@ -17,7 +18,17 @@ class DaySummary extends StatefulWidget {
 }
 
 class _DaySummaryState extends State<DaySummary> {
-  List<Event> events = <Event>[];
+  late List<Event> events;
+
+  @override
+  void initState() {
+    if (dateEventPairs.containsKey(widget.dayInfo.date)) {
+      events = dateEventPairs[widget.dayInfo.date]!;
+    } else {
+      events = <Event>[];
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +56,15 @@ class _DaySummaryState extends State<DaySummary> {
                 ),
               ),
             ),
-            Wrap(
-              children: [
-                Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: legend()
-                ),
-              ],
-            ),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.only(left: 20, right: 20),
+              child: Wrap(
+                spacing: 20,
+                runSpacing: 10,
+                children: toWidgetList(),
+              ),
+            )
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -67,10 +79,26 @@ class _DaySummaryState extends State<DaySummary> {
             );
             setState(() {
               events = data as List<Event>;
+
+              if (events.isNotEmpty) {
+                dateEventPairs[widget.dayInfo.date!] = events;
+              }
             });
           },
           child: const Icon(Icons.add, color: Colors.white),
         ));
+  }
+
+  List<Widget> toWidgetList() {
+    if (events.isNotEmpty) {
+      final List<Widget> list = <Widget>[];
+      for (int i = 0; i < events.length; i++) {
+        list.add(legendEntry(events[i]));
+      }
+      return list;
+    } else {
+      return [];
+    }
   }
 
   Widget legend() {
@@ -82,16 +110,19 @@ class _DaySummaryState extends State<DaySummary> {
   }
 
   Widget legendEntry(Event event) {
-    return Row(
-      children: [
-        Container(
-          height: 20,
-          width: 20,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: event.color),
-        ),
-        const SizedBox(width: 10),
-        Text(event.title)
-      ],
+    return FittedBox(
+      child: Row(
+        children: [
+          Container(
+            height: 20,
+            width: 20,
+            decoration:
+                BoxDecoration(shape: BoxShape.circle, color: event.color),
+          ),
+          const SizedBox(width: 10),
+          Text(event.title)
+        ],
+      ),
     );
   }
 }
@@ -121,6 +152,9 @@ class Arcs extends CustomPainter {
         radStart = temp.hour * pi / 12 + temp.minute * pi / 720 - pi / 2;
         radEnd =
             temp2.hour * pi / 12 + temp2.minute * pi / 720 - pi / 2 - radStart;
+        if (temp2.hour == 0) {
+          radEnd = 2 * pi - radStart - pi / 2;
+        }
         final fillBrush = Paint()..color = events[i].color!;
         canvas.drawArc(rect, radStart, radEnd, true, fillBrush);
       }

@@ -35,6 +35,7 @@ class _EventAddingPageState extends State<EventAddingPage> {
           Container(
               padding: const EdgeInsets.all(10),
               child: TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 controller: nameCtl,
                 decoration: const InputDecoration(
                   hintText: 'Name',
