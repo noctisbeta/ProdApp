@@ -14,8 +14,7 @@ class CalendarWidget extends StatelessWidget {
         // onTap: (CalendarTapDetails a) => {log('a')},
         onLongPress: (CalendarLongPressDetails dayInfo) =>
             Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => DaySummary(dayInfo: dayInfo)),
+              MaterialPageRoute(builder: (context) => DaySummary(dayInfo)),
             ));
   }
 }
