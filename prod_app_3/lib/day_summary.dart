@@ -29,19 +29,21 @@ class _DaySummaryState extends State<DaySummary> {
     } else {
       events = <Event>[];
     }
-    super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() {
         buildArcs();
       });
     });
+    super.initState();
   }
 
   void buildArcs() {
     print('buildam arce');
     if (events.isNotEmpty) {
       for (int i = 0; i < events.length; i++) {
+        print('buildam arce 4');
         arcs?.add(Arc(events[i]));
+        print('buildam arce 2');
         arcsDisplay?.add(SizedBox(
           height: 100,
           width: 100,
@@ -62,34 +64,35 @@ class _DaySummaryState extends State<DaySummary> {
         ),
         body: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 50),
-              margin: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                  color: Colors.indigoAccent,
-                  borderRadius: BorderRadius.circular(10)),
-              alignment: Alignment.center,
-              child: Stack(children: [
-                // Positioned(
-                //   width: 100,
-                //   height: 100,
-                //   child: CustomPaint(
-                //     // painter: Arcs(events),
-                //     painter: CircleFramePainter(),
-                //   ),
-                // ),
-                ...?arcsDisplay,
-                // ...?arcs,
-                // arcs?.isEmpty ? Text('a') : Text('b'),
-              ]),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                margin: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    color: Colors.indigoAccent,
+                    borderRadius: BorderRadius.circular(10)),
+                alignment: Alignment.center,
+                child: Stack(children: [
+                  SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: CustomPaint(
+                      painter: CircleFramePainter(),
+                    ),
+                  ),
+                  ...?arcsDisplay,
+                ]),
+              ),
             ),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.only(left: 20, right: 20),
-              child: Wrap(
-                spacing: 20,
-                runSpacing: 10,
-                children: toWidgetList(),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(left: 20, right: 20),
+                child: Wrap(
+                  spacing: 20,
+                  runSpacing: 10,
+                  children: toWidgetList(),
+                ),
               ),
             )
           ],
@@ -137,14 +140,6 @@ class _DaySummaryState extends State<DaySummary> {
       return list;
     } else {
       return [];
-    }
-  }
-
-  Widget legend() {
-    if (events.isNotEmpty) {
-      return legendEntry(events[0]);
-    } else {
-      return const Text('empty');
     }
   }
 
@@ -298,11 +293,10 @@ class ArcPainter extends CustomPainter {
     final centerX = size.width / 2;
     final centerY = size.height / 2;
     final center = Offset(centerX, centerY);
-    // final radius = min(centerX, centerY);
 
-    // var fillBrush2 = Paint()..color = Color(0xff303030);
-    // final fillBrush2 = Paint()..color = Colors.indigoAccent;
-    final Rect rect = Rect.fromCenter(center: center, width: 180, height: 180);
+    const double rectSize = 141;
+    final Rect rect =
+        Rect.fromCenter(center: center, width: rectSize, height: rectSize);
 
     if (event != null) {
       double radStart;
@@ -315,43 +309,16 @@ class ArcPainter extends CustomPainter {
       if (temp2.hour == 0) {
         radEnd = 2 * pi - radStart - pi / 2;
       }
-      final fillBrush = Paint()..color = event!.color!;
-      canvas.drawArc(rect, radStart, radEnd, true, fillBrush);
+      final fillBrush = Paint()
+        ..color = event!.color!
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 40;
+      canvas.drawArc(rect, radStart, radEnd, false, fillBrush);
     }
-
-    // canvas.drawCircle(center, radius, fillBrush2);
-    // final fillBrush3 = Paint()
-    //   ..style = PaintingStyle.stroke
-    //   ..strokeWidth = 2
-    //   ..color = Colors.black;
-    // canvas.drawCircle(center, radius, fillBrush3);
-    // canvas.drawCircle(center, size.width - 8.8, fillBrush3);
-
-    // final fillBrush4 = Paint()
-    //   ..style = PaintingStyle.stroke
-    //   ..strokeWidth = 2
-    //   ..color = Colors.black;
-
-    // final fillBrush5 = Paint()
-    //   ..style = PaintingStyle.fill
-    //   ..strokeWidth = 2
-    //   ..color = Colors.black;
-
-    // final currentTime = DateTime.now();
-    // // print(currentTime.hour);
-    // final currentTimeAngle =
-    //     currentTime.hour * pi / 12 + currentTime.minute * pi / 720 - pi / 2;
-    // // canvas.translate(centerX, centerY);
-    // // canvas.rotate(currentTimeAngle);
-    // final hourX = centerX + cos(currentTimeAngle) * radius;
-    // final hourY = centerY + sin(currentTimeAngle) * radius;
-    // final hourXe = centerX + cos(currentTimeAngle) * 89;
-    // final hourYe = centerX + sin(currentTimeAngle) * 89;
-
-    // canvas.drawLine(Offset(hourX, hourY), Offset(hourXe, hourYe), fillBrush4);
-    // canvas.drawCircle(Offset(hourXe, hourYe), 3, fillBrush5);
-
-    // canvas.drawArc(rect, currentTimeAngle, currentTimeAngle, true, fillBrush4);
+    // final rect2 = Rect.largest;
+    // Rect.
+    // final fillBrush = Paint()..color = event!.color!;
+    // canvas.drawRect(rect2, fillBrush);
   }
 
   @override
@@ -369,6 +336,7 @@ class Arc extends StatefulWidget {
 class _ArcState extends State<Arc> {
   @override
   Widget build(BuildContext context) {
+    print('buildam arce 3');
     return GestureDetector(
       onTap: () => {print('tappppp')},
       child: CustomPaint(
