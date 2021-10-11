@@ -1,23 +1,25 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart';
-import 'event.dart';
-import 'event_adding_page.dart';
-import 'globals.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+
+import '../event.dart';
+import '../globals.dart';
+import 'event_adding_screen.dart';
 
 // import 'package:fl_chart/fl_chart.dart';
 
-class DaySummary extends StatefulWidget {
+class DaySummaryScreen extends StatefulWidget {
   final CalendarLongPressDetails dayInfo;
 
-  const DaySummary(this.dayInfo, {Key? key}) : super(key: key);
+  const DaySummaryScreen(this.dayInfo, {Key? key}) : super(key: key);
 
   @override
-  _DaySummaryState createState() => _DaySummaryState();
+  _DaySummaryScreenState createState() => _DaySummaryScreenState();
 }
 
-class _DaySummaryState extends State<DaySummary> {
+class _DaySummaryScreenState extends State<DaySummaryScreen> {
   late List<Event> events;
   List<Arc>? arcs = [];
   List<Widget>? arcsDisplay = [];
@@ -292,7 +294,7 @@ class TimePointerPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final centerX = size.width / 2;
     final centerY = size.height / 2;
-    final center = Offset(centerX, centerY);
+    // final center = Offset(centerX, centerY);
     final radius = min(centerX, centerY);
 
     // var fillBrush2 = Paint()..color = Color(0xff303030);

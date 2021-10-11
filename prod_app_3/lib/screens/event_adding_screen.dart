@@ -1,10 +1,9 @@
-// import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:time_range_picker/time_range_picker.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-// import 'package:intl/intl.dart';
-import 'event.dart';
+import 'package:prod_app_3/database.dart';
+
+import '../event.dart';
 
 class EventAddingPage extends StatefulWidget {
   final List<Event> events;
@@ -86,7 +85,6 @@ class _EventAddingPageState extends State<EventAddingPage> {
                         return isOkayTo(value);
                       },
                       decoration: const InputDecoration(
-                        // hintText: 'To',
                         labelText: 'To',
                         border: OutlineInputBorder(),
                         helperText: 'Enter end time',
@@ -129,39 +127,6 @@ class _EventAddingPageState extends State<EventAddingPage> {
                 ),
               ),
             ),
-            // Center(
-            //   child: ElevatedButton(
-            //     onPressed: () async {
-            //       TimeRange result = await showTimeRangePicker(
-            //           context: context,
-            //           paintingStyle: PaintingStyle.stroke,
-            //           strokeColor: Colors.indigoAccent,
-            //           handlerColor: Colors.indigo,
-            //           selectedColor: Colors.indigoAccent,
-            //           ticks: 24,
-            //           labels: [
-            //             ClockLabel(angle: -pi / 2, text: '12'),
-            //             ClockLabel(angle: 0, text: '18'),
-            //             ClockLabel(angle: pi / 2, text: '24'),
-            //             ClockLabel(angle: pi, text: '6'),
-            //             ClockLabel(angle: pi / 4, text: '21'),
-            //             ClockLabel(angle: -pi / 4, text: '15'),
-            //             ClockLabel(angle: 3 * pi / 4, text: '3'),
-            //             ClockLabel(angle: -3 * pi / 4, text: '9'),
-            //           ],
-            //           rotateLabels: false,
-            //           backgroundWidget: Container(
-            //             width: 195.0,
-            //             height: 195.0,
-            //             decoration: new BoxDecoration(
-            //               color: Color.fromARGB(50, 10, 10, 10),
-            //               shape: BoxShape.circle,
-            //             ),
-            //           ));
-            //     },
-            //     child: Text("Pure"),
-            //   ),
-            // )
           ],
         ),
       ));
@@ -220,38 +185,34 @@ class _EventAddingPageState extends State<EventAddingPage> {
 
   void confirmSubmission() {
     final isValid = formKey.currentState?.validate();
-    // formKey.currentState?.validate();
 
     if (isValid == true && isOkayColor()) {
-      print(currentColor);
       WidgetsBinding.instance?.addPostFrameCallback((_) {
-        print('addam event');
         final Event newEvent = Event(
             title: nameCtl.text,
             from: fromTime!,
             to: toTime!,
-            color: currentColor);
+            color: currentColor,
+            dateTime: DateTime.now());
         widget.events.add(newEvent);
+        // DayDataDB(date)
+
         Navigator.pop(context, widget.events);
       });
     }
   }
 
   String? isOkayTitle(String? title) {
-    print('validiram title');
     if (title == null || title == "") {
-      print('returnam required title');
       return "Required";
     }
 
     for (int i = 0; i < widget.events.length; i++) {
       if (widget.events[i].title == title) {
         if (currentColor == widget.events[i].color) {
-          print('returnam null title');
           return null;
         } else {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
-            print('changam color');
             changeColor(widget.events[i].color!);
             const snackBar = SnackBar(
               content: Text(
@@ -267,11 +228,9 @@ class _EventAddingPageState extends State<EventAddingPage> {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           });
         }
-        print('returnam null title 2');
         return null;
       }
     }
-    print('returnam null title 3');
     return null;
   }
 
@@ -315,13 +274,11 @@ class _EventAddingPageState extends State<EventAddingPage> {
 
   bool isOkayColor() {
     if (widget.events.isEmpty) {
-      print('returning true 1');
       return true;
     }
     for (int i = 0; i < widget.events.length; i++) {
       if (widget.events[i].color == currentColor) {
         if (nameCtl.text == widget.events[i].title) {
-          print('returning true 2');
           return true;
         } else {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -342,11 +299,9 @@ class _EventAddingPageState extends State<EventAddingPage> {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           });
         }
-        print('returnint false 1');
         return false;
       }
     }
-    print('returning true 3');
     return true;
   }
 }

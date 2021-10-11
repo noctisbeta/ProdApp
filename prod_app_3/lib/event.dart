@@ -5,16 +5,26 @@ class Event {
   final TimeOfDay from;
   final TimeOfDay to;
   final Color? color;
+  final DateTime dateTime;
 
   const Event({
     required this.title,
     required this.from,
     required this.to,
-    this.color
+    required this.color,
+    required this.dateTime,
   });
 
   @override
   String toString() {
     return title + from.toString() + to.toString();
   }
+
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'from': from.toString(),
+        'to': to.toString(),
+        'color': color.toString(),
+        'dateTime': dateTime.toString(),
+      };
 }

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:prod_app_3/home.dart';
+import 'package:prod_app_3/screens/calendar_screen.dart';
+import 'package:provider/provider.dart';
+import 'database.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
 
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => DatabaseModel(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,13 +21,13 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
           child: child!),
-      title: 'Flutter Demo',
+      title: 'Productivity app',
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData.dark().copyWith(
           // scaffoldBackgroundColor: Colors.black,
           accentColor: Colors.indigoAccent,
           primaryColor: Colors.transparent),
-      home: const Home(),
+      home: const CalendarScreen(),
     );
   }
 }

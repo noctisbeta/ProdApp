@@ -32,8 +32,6 @@ dependencies:
 
   font_awesome_flutter: ^9.1.0
 
-  provider: ^6.0.0
-
   syncfusion_flutter_calendar: ^19.2.57
 
   intl: ^0.17.0
@@ -44,6 +42,11 @@ dependencies:
   fl_chart: ^0.40.0
 
   lint: ^1.0.0
+
+  sqflite: ^2.0.0+4
+  path: ^1.8.0
+
+  provider: ^6.0.1
 
 dev_dependencies:
   flutter_test:
