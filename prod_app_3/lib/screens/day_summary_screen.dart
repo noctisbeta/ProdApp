@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -263,7 +264,7 @@ class CircleFramePainter extends CustomPainter {
       ..strokeWidth = 40;
     // canvas.drawArc(rect, radStart, radEnd, false, fillBrush);
 
-    path.arcTo(rect, 0, 2 * pi - 0.000001, true);
+    path.arcTo(rect, 0, 2 * pi - 1, true);
     canvas.drawPath(path, fillBrush);
     path.reset();
     path.arcTo(rect, 0, -1, true);
@@ -418,7 +419,8 @@ class ArcPainter extends CustomPainter {
       final fillBrush = Paint()
         ..color = event!.color!
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 22;
+        // ..strokeCap = StrokeCap.round
+        ..strokeWidth = 40;
       // canvas.drawArc(rect, radStart, radEnd, false, fillBrush);
 
       const double diff = 25;
@@ -435,27 +437,46 @@ class ArcPainter extends CustomPainter {
       final Rect rect3 = Rect.fromCenter(
           center: center, width: rectSize - diff2, height: rectSize - diff2);
 
-      canvas.drawArc(rect2, radStart + 0.14 + 0.02, radEnd - 0.28 - 0.04, false,
-          fillBrush2);
+      // const double iG = 0.2;
+      // const double oG = 0.15;
+      // const double cG = 0.0639;
+      // const double cG = 0.4;
+      // canvas.drawArc(rect2, radStart + iG, radEnd - 2 * iG, false, fillBrush2);
 
-      canvas.drawArc(rect3, radStart + 0.09 + 0.04, radEnd - 0.18 - 0.08, false,
-          fillBrush2);
+      // canvas.drawArc(rect3, radStart + oG, radEnd - 2 * oG, false, fillBrush2);
 
       final Rect rect =
           Rect.fromCenter(center: center, width: rectSize, height: rectSize);
 
-      path.arcTo(rect, radStart + 0.035, radEnd - 0.07, true);
+      // path.arcTo(rect, radStart + 0.035, radEnd - 0.07, true);
       // canvas.drawPath(path, fillBrush);
-      canvas.drawArc(rect, radStart + 0.035, radEnd - 0.07, false, fillBrush);
+      canvas.drawArc(rect, radStart, radEnd, false, fillBrush);
+
+      // (cost, sint) t from 0 to 2pi
 
       path.reset();
       path.moveTo(centerX, centerY);
-      path.lineTo(centerX, 200);
+      const double radius = 100;
+      const double shift = pi;
+      path.lineTo(
+          centerX + radius * cos(radStart), centerY + radius * sin(radStart));
       final brush = Paint()
         ..color = Colors.indigoAccent
+        // ..color = Colors.red
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 10;
+        ..strokeWidth = 3;
+      canvas.drawPath(path, brush);
+
+      path.reset();
+      path.moveTo(centerX, centerY);
+      path.lineTo(centerX + radius * cos(radEnd + radStart),
+          centerY + radius * sin(radEnd + radStart));
+      canvas.drawPath(path, brush);
+      // path.reset();
+      // path.moveTo(centerX, centerY);
+      // path.lineTo(centerX, 200);
       // canvas.drawPath(path, brush);
+
     }
   }
 
