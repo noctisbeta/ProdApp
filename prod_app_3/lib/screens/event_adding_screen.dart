@@ -264,7 +264,7 @@ class _EventAddingPageState extends State<EventAddingPage> {
           minute: int.parse(to.split(":")[1]));
 
       final compareTime = widget.events[i];
-      if (toDouble(compareTime.from) <= toDouble(tempTime) &&
+      if (toDouble(compareTime.from) < toDouble(tempTime) &&
           toDouble(compareTime.to) > toDouble(tempTime)) {
         return "Conflicting times";
       }

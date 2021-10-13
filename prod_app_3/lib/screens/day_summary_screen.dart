@@ -13,7 +13,7 @@ import 'event_adding_screen.dart';
 class DaySummaryScreen extends StatefulWidget {
   final CalendarLongPressDetails dayInfo;
 
-  const DaySummaryScreen(this.dayInfo, {Key? key}) : super(key: key);
+  const DaySummaryScreen({required this.dayInfo, Key? key}) : super(key: key);
 
   @override
   _DaySummaryScreenState createState() => _DaySummaryScreenState();
@@ -247,6 +247,41 @@ class CircleFramePainter extends CustomPainter {
     final center = Offset(centerX, centerY);
     final radius = min(centerX, centerY);
 
+    final Path path = Path();
+
+    const double rectSize = 141;
+    final Rect rect =
+        Rect.fromCenter(center: center, width: rectSize, height: rectSize);
+
+    final double radStart;
+    final double radEnd;
+
+    final fillBrush = Paint()
+      // ..color = Colors.indigoAccent[100]!
+      ..color = const Color.fromARGB(150, 70, 92, 215)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 40;
+    // canvas.drawArc(rect, radStart, radEnd, false, fillBrush);
+
+    path.arcTo(rect, 0, 2 * pi - 0.000001, true);
+    canvas.drawPath(path, fillBrush);
+    path.reset();
+    path.arcTo(rect, 0, -1, true);
+    canvas.drawPath(path, fillBrush);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
+class CircleFramePainter2 extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final centerX = size.width / 2;
+    final centerY = size.height / 2;
+    final center = Offset(centerX, centerY);
+    final radius = min(centerX, centerY);
+
     // var fillBrush2 = Paint()..color = Color(0xff303030);
     final fillBrush2 = Paint()..color = Colors.indigoAccent;
     canvas.drawCircle(center, radius, fillBrush2);
@@ -333,6 +368,16 @@ class TimePointerPainter extends CustomPainter {
     canvas.drawCircle(Offset(hourXe, hourYe), 3, fillBrush5);
 
     // canvas.drawArc(rect, currentTimeAngle, currentTimeAngle, true, fillBrush4);
+    // final path = Path();
+    // final brush = Paint()
+    //   // ..color = Colors.blue[500]!
+    //   ..color = const Color.fromARGB(150, 70, 92, 215)
+    //   ..strokeWidth = 5
+    //   ..style = PaintingStyle.stroke;
+    // path.reset();
+    // path.moveTo(centerX + 6, 200);
+    // path.lineTo(centerX + 6, -100);
+    // canvas.drawPath(path, brush);
   }
 
   @override
@@ -358,8 +403,6 @@ class ArcPainter extends CustomPainter {
     final center = Offset(centerX, centerY);
 
     const double rectSize = 141;
-    final Rect rect =
-        Rect.fromCenter(center: center, width: rectSize, height: rectSize);
 
     if (event != null) {
       double radStart;
@@ -375,11 +418,44 @@ class ArcPainter extends CustomPainter {
       final fillBrush = Paint()
         ..color = event!.color!
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 40;
+        ..strokeWidth = 22;
       // canvas.drawArc(rect, radStart, radEnd, false, fillBrush);
 
-      path.arcTo(rect, radStart, radEnd, true);
-      canvas.drawPath(path, fillBrush);
+      const double diff = 25;
+      final Rect rect2 = Rect.fromCenter(
+          center: center, width: rectSize - diff, height: rectSize - diff);
+      final fillBrush2 = Paint()
+        ..color = event!.color!
+        // ..color = Colors.red
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round
+        ..strokeWidth = 15;
+
+      const double diff2 = -25;
+      final Rect rect3 = Rect.fromCenter(
+          center: center, width: rectSize - diff2, height: rectSize - diff2);
+
+      canvas.drawArc(rect2, radStart + 0.14 + 0.02, radEnd - 0.28 - 0.04, false,
+          fillBrush2);
+
+      canvas.drawArc(rect3, radStart + 0.09 + 0.04, radEnd - 0.18 - 0.08, false,
+          fillBrush2);
+
+      final Rect rect =
+          Rect.fromCenter(center: center, width: rectSize, height: rectSize);
+
+      path.arcTo(rect, radStart + 0.035, radEnd - 0.07, true);
+      // canvas.drawPath(path, fillBrush);
+      canvas.drawArc(rect, radStart + 0.035, radEnd - 0.07, false, fillBrush);
+
+      path.reset();
+      path.moveTo(centerX, centerY);
+      path.lineTo(centerX, 200);
+      final brush = Paint()
+        ..color = Colors.indigoAccent
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 10;
+      // canvas.drawPath(path, brush);
     }
   }
 
