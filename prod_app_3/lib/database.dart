@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'event.dart';
 
@@ -76,4 +78,12 @@ class DayDataDB {
   String toString() {
     return 'DayData{date: $date, events: $events}';
   }
+}
+
+class DatabaseHelper {
+  DatabaseHelper._privateConstructor();
+  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
+
+  static Database? _database;
+  // Future<Database> get database async => _database ??= await _initDatabase();
 }
