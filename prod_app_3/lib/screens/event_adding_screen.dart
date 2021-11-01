@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:prod_app_3/database.dart';
+// import 'package:prod_app_3/database.dart';
 
 import '../event.dart';
 
@@ -213,7 +213,7 @@ class _EventAddingPageState extends State<EventAddingPage> {
           return null;
         } else {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
-            changeColor(widget.events[i].color!);
+            changeColor(widget.events[i].color);
             const snackBar = SnackBar(
               content: Text(
                 'Changed color to match name',

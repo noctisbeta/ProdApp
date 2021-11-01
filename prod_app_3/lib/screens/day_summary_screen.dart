@@ -245,7 +245,7 @@ class CircleFramePainter extends CustomPainter {
     final centerX = size.width / 2;
     final centerY = size.height / 2;
     final center = Offset(centerX, centerY);
-    final radius = min(centerX, centerY);
+    // final radius = min(centerX, centerY);
 
     final Path path = Path();
 
@@ -253,8 +253,8 @@ class CircleFramePainter extends CustomPainter {
     final Rect rect =
         Rect.fromCenter(center: center, width: rectSize, height: rectSize);
 
-    final double radStart;
-    final double radEnd;
+    // final double radStart;
+    // final double radEnd;
 
     final fillBrush = Paint()
       // ..color = Colors.indigoAccent[100]!
@@ -416,25 +416,25 @@ class ArcPainter extends CustomPainter {
         radEnd = 2 * pi - radStart - pi / 2;
       }
       final fillBrush = Paint()
-        ..color = event!.color!
+        ..color = event!.color
         ..style = PaintingStyle.stroke
         // ..strokeCap = StrokeCap.round
         ..strokeWidth = 40;
       // canvas.drawArc(rect, radStart, radEnd, false, fillBrush);
 
-      const double diff = 25;
-      final Rect rect2 = Rect.fromCenter(
-          center: center, width: rectSize - diff, height: rectSize - diff);
-      final fillBrush2 = Paint()
-        ..color = event!.color!
-        // ..color = Colors.red
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round
-        ..strokeWidth = 15;
+      // const double diff = 25;
+      // final Rect rect2 = Rect.fromCenter(
+      //     center: center, width: rectSize - diff, height: rectSize - diff);
+      // final fillBrush2 = Paint()
+      //   ..color = event!.color!
+      //   // ..color = Colors.red
+      //   ..style = PaintingStyle.stroke
+      //   ..strokeCap = StrokeCap.round
+      //   ..strokeWidth = 15;
 
-      const double diff2 = -25;
-      final Rect rect3 = Rect.fromCenter(
-          center: center, width: rectSize - diff2, height: rectSize - diff2);
+      // const double diff2 = -25;
+      // final Rect rect3 = Rect.fromCenter(
+      //     center: center, width: rectSize - diff2, height: rectSize - diff2);
 
       // const double iG = 0.2;
       // const double oG = 0.15;
@@ -456,7 +456,7 @@ class ArcPainter extends CustomPainter {
       path.reset();
       path.moveTo(centerX, centerY);
       const double radius = 100;
-      const double shift = pi;
+      // const double shift = pi;
       path.lineTo(
           centerX + radius * cos(radStart), centerY + radius * sin(radStart));
       final brush = Paint()
