@@ -24,24 +24,24 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.3
 
-  firebase_auth: ^3.1.0
-  google_sign_in: ^5.0.7
-  cloud_firestore: ^2.5.1
+  # firebase_auth: ^3.1.4
+  # google_sign_in: ^5.0.7
+  # cloud_firestore: ^2.5.1
 
-  font_awesome_flutter: ^9.1.0
+  # font_awesome_flutter: ^9.1.0
 
-  syncfusion_flutter_calendar: ^19.2.57
+  syncfusion_flutter_calendar: ^19.3.47
 
   intl: ^0.17.0
 
-  time_range_picker: any
-  flutter_colorpicker: ^0.4.0
-  pie_chart: ^5.0.0
-  fl_chart: ^0.40.0
+  time_range_picker: ^2.0.1
+  flutter_colorpicker: ^0.6.0
+  pie_chart: ^5.0.1
+  fl_chart: ^0.40.2
 
-  lint: ^1.0.0
+  lint: ^1.7.2
 
   sqflite: ^2.0.0+4
   path: ^1.8.0

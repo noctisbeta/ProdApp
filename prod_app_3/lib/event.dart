@@ -16,11 +16,11 @@ class Event {
   });
 
   factory Event.fromMap(Map<String, dynamic> json) => Event(
-        title: json['title'] as String,
-        from: json['from'] as TimeOfDay,
-        to: json['to'] as TimeOfDay,
-        color: json['color'] as Color,
-        dateTime: json['dateTime'] as DateTime,
+        title: json['eventTitle'] as String,
+        from: json['timeFrom'] as TimeOfDay,
+        to: json['timeTo'] as TimeOfDay,
+        color: json['eventColor'] as Color,
+        dateTime: json['eventDateTime'] as DateTime,
       );
 
   @override
@@ -29,10 +29,11 @@ class Event {
   }
 
   Map<String, dynamic> toMap() => {
-        'title': title,
-        'from': from.toString(),
-        'to': to.toString(),
-        'color': color.toString(),
-        'dateTime': dateTime.toString(),
+        // 'eventID': 0,
+        'eventTitle': title,
+        'timeFrom': from.toString(),
+        'timeTo': to.toString(),
+        'eventColor': color.toString(),
+        'eventDateTime': dateTime.toString(),
       };
 }

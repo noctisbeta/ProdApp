@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-// import 'package:prod_app_3/database.dart';
+import 'package:prod_app_3/database.dart';
 
 import '../event.dart';
 
@@ -28,16 +28,16 @@ class _EventAddingPageState extends State<EventAddingPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text('Enter Details'),
-        centerTitle: true,
-      ),
-      body: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            Container(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: const Text('Enter Details'),
+          centerTitle: true,
+        ),
+        body: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              Container(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
                   textCapitalization: TextCapitalization.sentences,
@@ -52,84 +52,91 @@ class _EventAddingPageState extends State<EventAddingPage> {
                     border: OutlineInputBorder(),
                     helperText: 'Enter name',
                   ),
-                )),
-            Row(
-              children: [
-                Flexible(
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: timeCtlFrom,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        return isOkayFrom(value);
-                      },
-                      decoration: const InputDecoration(
-                        // hintText: 'From',
-                        labelText: 'From',
-                        border: OutlineInputBorder(),
-                        helperText: 'Enter start time',
-                      ),
-                      onTap: () => pickTime('from'),
-                      readOnly: true,
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: timeCtlTo,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        return isOkayTo(value);
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'To',
-                        border: OutlineInputBorder(),
-                        helperText: 'Enter end time',
-                      ),
-                      onTap: () => pickTime('to'),
-                      readOnly: true,
-                      showCursor: false,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Column(children: [
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 5),
-                  child: myColorPicker()),
-              // const Text(
-              //   'Event color',
-              //   style: TextStyle(color: Colors.grey),
-              // ),
-              if (isOkayColor())
-                const Text(
-                  'Event color',
-                  style: TextStyle(color: Colors.grey),
-                )
-              else
-                Text('Color already used',
-                    style: TextStyle(color: Theme.of(context).errorColor)),
-            ]),
-            const Expanded(child: SizedBox()),
-            Center(
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.indigoAccent,
-                ),
-                onPressed: confirmSubmission,
-                child: const Text(
-                  'CONFIRM',
-                  style: TextStyle(color: Colors.white),
                 ),
               ),
-            ),
-          ],
+              Row(
+                children: [
+                  Flexible(
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: timeCtlFrom,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          return isOkayFrom(value);
+                        },
+                        decoration: const InputDecoration(
+                          // hintText: 'From',
+                          labelText: 'From',
+                          border: OutlineInputBorder(),
+                          helperText: 'Enter start time',
+                        ),
+                        onTap: () => pickTime('from'),
+                        readOnly: true,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: timeCtlTo,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          return isOkayTo(value);
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'To',
+                          border: OutlineInputBorder(),
+                          helperText: 'Enter end time',
+                        ),
+                        onTap: () => pickTime('to'),
+                        readOnly: true,
+                        showCursor: false,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 5),
+                    child: myColorPicker(),
+                  ),
+                  // const Text(
+                  //   'Event color',
+                  //   style: TextStyle(color: Colors.grey),
+                  // ),
+                  if (isOkayColor())
+                    const Text(
+                      'Event color',
+                      style: TextStyle(color: Colors.grey),
+                    )
+                  else
+                    Text(
+                      'Color already used',
+                      style: TextStyle(color: Theme.of(context).errorColor),
+                    ),
+                ],
+              ),
+              const Expanded(child: SizedBox()),
+              Center(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.indigoAccent,
+                  ),
+                  onPressed: confirmSubmission,
+                  child: const Text(
+                    'CONFIRM',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ));
+      );
 
   Future pickTime(String choice) async {
     final newTime = await showTimePicker(
@@ -162,43 +169,60 @@ class _EventAddingPageState extends State<EventAddingPage> {
   Widget myColorPicker() => GestureDetector(
         key: colorKey,
         onTap: () => showDialog(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Pick Color'),
-                  contentPadding: const EdgeInsets.all(10),
-                  content: BlockPicker(
-                      pickerColor: currentColor, onColorChanged: changeColor),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('SELECT'),
-                    )
-                  ],
-                )),
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Pick Color'),
+            contentPadding: const EdgeInsets.all(10),
+            content: BlockPicker(
+              pickerColor: currentColor,
+              onColorChanged: changeColor,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('SELECT'),
+              )
+            ],
+          ),
+        ),
         child: Container(
           decoration: BoxDecoration(
-              color: currentColor, borderRadius: BorderRadius.circular(10)),
+            color: currentColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
           height: 100,
           width: 100,
         ),
       );
 
-  void confirmSubmission() {
+  Future<void> confirmSubmission() async {
     final isValid = formKey.currentState?.validate();
 
     if (isValid == true && isOkayColor()) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
-        final Event newEvent = Event(
-            title: nameCtl.text,
-            from: fromTime!,
-            to: toTime!,
-            color: currentColor,
-            dateTime: DateTime.now());
-        widget.events.add(newEvent);
-        // DayDataDB(date)
+      final Event newEvent = Event(
+        title: nameCtl.text,
+        from: fromTime!,
+        to: toTime!,
+        color: currentColor,
+        dateTime: DateTime.now(),
+      );
+      await DatabaseHelper.instance.add(newEvent);
+      // Navigator.pop(context, widget.events);
+      if (!mounted) return;
+      Navigator.of(context).pop();
 
-        Navigator.pop(context, widget.events);
-      });
+      // WidgetsBinding.instance?.addPostFrameCallback((_)  {
+      //   final Event newEvent = Event(
+      //     title: nameCtl.text,
+      //     from: fromTime!,
+      //     to: toTime!,
+      //     color: currentColor,
+      //     dateTime: DateTime.now(),
+      //   );
+      //   widget.events.add(newEvent);
+
+      //   Navigator.pop(context, widget.events);
+      // });
     }
   }
 
@@ -242,8 +266,9 @@ class _EventAddingPageState extends State<EventAddingPage> {
     }
     for (int i = 0; i < widget.events.length; i++) {
       final TimeOfDay tempTime = TimeOfDay(
-          hour: int.parse(from.split(":")[0]),
-          minute: int.parse(from.split(":")[1]));
+        hour: int.parse(from.split(":")[0]),
+        minute: int.parse(from.split(":")[1]),
+      );
 
       final compareTime = widget.events[i];
       if (toDouble(compareTime.from) <= toDouble(tempTime) &&
@@ -260,8 +285,9 @@ class _EventAddingPageState extends State<EventAddingPage> {
     }
     for (int i = 0; i < widget.events.length; i++) {
       final TimeOfDay tempTime = TimeOfDay(
-          hour: int.parse(to.split(":")[0]),
-          minute: int.parse(to.split(":")[1]));
+        hour: int.parse(to.split(":")[0]),
+        minute: int.parse(to.split(":")[1]),
+      );
 
       final compareTime = widget.events[i];
       if (toDouble(compareTime.from) < toDouble(tempTime) &&

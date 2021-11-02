@@ -109,18 +109,14 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Material(
       shape: const CircleBorder(),
       clipBehavior: Clip.antiAlias,
-      color: theme.accentColor,
+      color: Theme.of(context).colorScheme.secondary,
       elevation: 4.0,
-      child: IconTheme.merge(
-        data: theme.accentIconTheme,
-        child: IconButton(
-          onPressed: onPressed,
-          icon: icon,
-        ),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: icon,
       ),
     );
   }

@@ -8,13 +8,30 @@ class CalendarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SfCalendar(
-        view: CalendarView.month,
-        initialSelectedDate: DateTime.now(),
-        cellBorderColor: Colors.transparent,
-        onLongPress: (CalendarLongPressDetails dayInfo) =>
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => DaySummaryScreen(dayInfo: dayInfo)),
-            ));
+      view: CalendarView.month,
+      headerStyle: const CalendarHeaderStyle(
+        textAlign: TextAlign.center,
+        textStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+        ),
+      ),
+      monthViewSettings: const MonthViewSettings(
+        monthCellStyle: MonthCellStyle(
+          textStyle: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      initialSelectedDate: DateTime.now(),
+      cellBorderColor: Colors.transparent,
+      backgroundColor: Colors.grey[800],
+      onLongPress: (CalendarLongPressDetails dayInfo) =>
+          Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => DaySummaryScreen(dayInfo: dayInfo),
+        ),
+      ),
+    );
   }
 }

@@ -2,13 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:prod_app_3/database.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../event.dart';
 import '../globals.dart';
 import 'event_adding_screen.dart';
-
-// import 'package:fl_chart/fl_chart.dart';
 
 class DaySummaryScreen extends StatefulWidget {
   final CalendarLongPressDetails dayInfo;
@@ -43,11 +42,13 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
     if (events.isNotEmpty) {
       for (int i = 0; i < events.length; i++) {
         arcs?.add(Arc(events[i]));
-        arcsDisplay?.add(SizedBox(
-          height: 100,
-          width: 100,
-          child: Arc(events[i]),
-        ));
+        arcsDisplay?.add(
+          SizedBox(
+            height: 100,
+            width: 100,
+            child: Arc(events[i]),
+          ),
+        );
       }
     }
   }
@@ -56,81 +57,96 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
   Widget build(BuildContext context) {
     // print(Theme.of(context).canvasColor);
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-              "${DateFormat('EEEE').format(widget.dayInfo.date!)}'s Summary"),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "${DateFormat('EEEE').format(widget.dayInfo.date!)}'s Summary",
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 50),
-                margin: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                    color: Colors.indigoAccent,
-                    borderRadius: BorderRadius.circular(10)),
-                alignment: Alignment.center,
-                child: Stack(children: [
-                  SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: CustomPaint(
-                      painter: CircleFramePainter(),
-                    ),
-                  ),
-                  ...?arcsDisplay,
-                  SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: CustomPaint(
-                      painter: TimePointerPainter(),
-                    ),
-                  ),
-                ]),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              margin: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.indigoAccent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              alignment: Alignment.center,
+              child: FutureBuilder<List<Event>>(
+                future: DatabaseHelper.instance.getEvents(),
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<List<Event>> snapshot,
+                ) {
+                  print(snapshot.data);
+                  return Stack(
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: CustomPaint(
+                          painter: CircleFramePainter(),
+                        ),
+                      ),
+                      ...?arcsDisplay,
+                      SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: CustomPaint(
+                          painter: TimePointerPainter(),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                margin: const EdgeInsets.only(left: 20, right: 20),
-                child: Wrap(
-                  spacing: 20,
-                  runSpacing: 10,
-                  children: toWidgetList(),
-                ),
+          ),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              margin: const EdgeInsets.only(left: 20, right: 20),
+              child: Wrap(
+                spacing: 20,
+                runSpacing: 10,
+                children: toWidgetList(),
               ),
-            )
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.indigoAccent,
-          onPressed: () async {
-            final data = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => EventAddingPage(
-                        events: events,
-                      )),
-            );
-            setState(() {
-              if (data == null) {
-                return;
-              }
-              events = data as List<Event>;
+            ),
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.indigoAccent,
+        onPressed: () async {
+          final data = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EventAddingPage(
+                events: events,
+              ),
+            ),
+          );
+          setState(() {
+            if (data == null) {
+              return;
+            }
+            events = data as List<Event>;
 
-              if (events.isNotEmpty) {
-                dateEventPairs[widget.dayInfo.date!] = events;
-              }
-              WidgetsBinding.instance?.addPostFrameCallback((_) {
-                setState(() {
-                  buildArcs();
-                });
+            if (events.isNotEmpty) {
+              dateEventPairs[widget.dayInfo.date!] = events;
+            }
+            WidgetsBinding.instance?.addPostFrameCallback((_) {
+              setState(() {
+                buildArcs();
               });
             });
-          },
-          child: const Icon(Icons.add, color: Colors.white),
-        ));
+          });
+        },
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
   }
 
   List<Widget> toWidgetList() {
@@ -458,7 +474,9 @@ class ArcPainter extends CustomPainter {
       const double radius = 100;
       // const double shift = pi;
       path.lineTo(
-          centerX + radius * cos(radStart), centerY + radius * sin(radStart));
+        centerX + radius * cos(radStart),
+        centerY + radius * sin(radStart),
+      );
       final brush = Paint()
         ..color = Colors.indigoAccent
         // ..color = Colors.red
@@ -468,8 +486,10 @@ class ArcPainter extends CustomPainter {
 
       path.reset();
       path.moveTo(centerX, centerY);
-      path.lineTo(centerX + radius * cos(radEnd + radStart),
-          centerY + radius * sin(radEnd + radStart));
+      path.lineTo(
+        centerX + radius * cos(radEnd + radStart),
+        centerY + radius * sin(radEnd + radStart),
+      );
       canvas.drawPath(path, brush);
       // path.reset();
       // path.moveTo(centerX, centerY);
