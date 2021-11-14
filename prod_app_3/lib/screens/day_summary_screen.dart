@@ -19,23 +19,37 @@ class DaySummaryScreen extends StatefulWidget {
 }
 
 class _DaySummaryScreenState extends State<DaySummaryScreen> {
-  late List<Event> events;
+  List<Event> events = [];
   List<Arc>? arcs = [];
   List<Widget>? arcsDisplay = [];
+  late Future<List<Event>> eventsDB;
 
   @override
   void initState() {
-    if (dateEventPairs.containsKey(widget.dayInfo.date)) {
-      events = dateEventPairs[widget.dayInfo.date]!;
-    } else {
-      events = <Event>[];
-    }
+    eventsDB = getEvents();
+    getEvents2();
+    // if (dateEventPairs.containsKey(widget.dayInfo.date)) {
+    //   events = dateEventPairs[widget.dayInfo.date]!;
+    // } else {
+    //   events = <Event>[];
+    // }
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() {
         buildArcs();
       });
     });
     super.initState();
+  }
+
+  Future<List<Event>> getEvents() async {
+    return DatabaseHelper.instance.getEvents();
+  }
+
+  Future<void> getEvents2() async {
+    final List<Event> events2 = await DatabaseHelper.instance.getEvents();
+    setState(() {
+      events = events2;
+    });
   }
 
   void buildArcs() {
@@ -75,12 +89,17 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
               ),
               alignment: Alignment.center,
               child: FutureBuilder<List<Event>>(
-                future: DatabaseHelper.instance.getEvents(),
+                future: eventsDB,
                 builder: (
                   BuildContext context,
                   AsyncSnapshot<List<Event>> snapshot,
                 ) {
-                  print(snapshot.data);
+                  WidgetsBinding.instance?.addPostFrameCallback((_) {
+                    setState(() {
+                      buildArcs();
+                    });
+                  });
+
                   return Stack(
                     children: [
                       SizedBox(

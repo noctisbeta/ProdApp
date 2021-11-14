@@ -16,6 +16,7 @@ class DatabaseHelper {
     final Directory documentsDirectory =
         await getApplicationDocumentsDirectory();
     final String path = join(documentsDirectory.path, 'events.db');
+    // print(documentsDirectory.path + 'ala');
 
     return openDatabase(
       path,
@@ -43,11 +44,13 @@ class DatabaseHelper {
 
   Future<List<Event>> getEvents() async {
     final Database db = await instance.database;
-    final events = await db.query('events');
-    final List<Event> eventList =
-        events.isNotEmpty ? events.map((e) => Event.fromMap(e)).toList() : [];
-    print('eventList:');
-    print(eventList);
+    final List<Map<String, dynamic>> events = await db.query('events');
+    // final List<Event> eventList =
+    //     events.isNotEmpty ? events.map((e) => Event.fromMap(e)).toList() : [];
+    final List<Event> eventList = [];
+    for (final pair in events) {
+      eventList.add(Event.fromMap(pair));
+    }
     return eventList;
   }
 
@@ -56,6 +59,7 @@ class DatabaseHelper {
     return db.insert(
       'events',
       event.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 }

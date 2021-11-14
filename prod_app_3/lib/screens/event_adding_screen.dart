@@ -196,34 +196,38 @@ class _EventAddingPageState extends State<EventAddingPage> {
       );
 
   Future<void> confirmSubmission() async {
-    final isValid = formKey.currentState?.validate();
+    // final isValid = formKey.currentState?.validate();
 
-    if (isValid == true && isOkayColor()) {
-      final Event newEvent = Event(
-        title: nameCtl.text,
-        from: fromTime!,
-        to: toTime!,
-        color: currentColor,
-        dateTime: DateTime.now(),
-      );
-      await DatabaseHelper.instance.add(newEvent);
-      // Navigator.pop(context, widget.events);
-      if (!mounted) return;
-      Navigator.of(context).pop();
+    // if (isValid == true && isOkayColor()) {
+    final Event newEvent = Event(
+      title: nameCtl.text,
+      from: fromTime!,
+      to: toTime!,
+      color: currentColor,
+      dateTime: DateTime.now(),
+    );
+    // print('time: ' + fromTime.toString());
+    // print('date: ' + DateTime.now().toString());
+    // print('color: ' + currentColor.toString());
+    await DatabaseHelper.instance.add(newEvent);
+    // Navigator.pop(context, widget.events);
 
-      // WidgetsBinding.instance?.addPostFrameCallback((_)  {
-      //   final Event newEvent = Event(
-      //     title: nameCtl.text,
-      //     from: fromTime!,
-      //     to: toTime!,
-      //     color: currentColor,
-      //     dateTime: DateTime.now(),
-      //   );
-      //   widget.events.add(newEvent);
+    if (!mounted) return;
+    Navigator.of(context).pop();
 
-      //   Navigator.pop(context, widget.events);
-      // });
-    }
+    // WidgetsBinding.instance?.addPostFrameCallback((_)  {
+    //   final Event newEvent = Event(
+    //     title: nameCtl.text,
+    //     from: fromTime!,
+    //     to: toTime!,
+    //     color: currentColor,
+    //     dateTime: DateTime.now(),
+    //   );
+    //   widget.events.add(newEvent);
+
+    //   Navigator.pop(context, widget.events);
+    // });
+    // }
   }
 
   String? isOkayTitle(String? title) {
