@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:prod_app_3/database.dart';
+import 'package:prod_app_3/database/database.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-import '../event.dart';
+import '../database/event.dart';
 import '../globals.dart';
 import 'event_adding_screen.dart';
 
@@ -28,11 +28,7 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
   void initState() {
     eventsDB = getEvents();
     getEvents2();
-    // if (dateEventPairs.containsKey(widget.dayInfo.date)) {
-    //   events = dateEventPairs[widget.dayInfo.date]!;
-    // } else {
-    //   events = <Event>[];
-    // }
+
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() {
         buildArcs();
@@ -42,11 +38,12 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
   }
 
   Future<List<Event>> getEvents() async {
-    return DatabaseHelper.instance.getEvents();
+    return DatabaseHelper.instance.getTodaysEvents(widget.dayInfo.date!);
   }
 
   Future<void> getEvents2() async {
-    final List<Event> events2 = await DatabaseHelper.instance.getEvents();
+    final List<Event> events2 =
+        await DatabaseHelper.instance.getTodaysEvents(widget.dayInfo.date!);
     setState(() {
       events = events2;
     });

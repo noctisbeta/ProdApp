@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:prod_app_3/database.dart';
+import 'package:prod_app_3/database/database.dart';
 
-import '../event.dart';
+import '../database/event.dart';
 
 class EventAddingPage extends StatefulWidget {
   final List<Event> events;

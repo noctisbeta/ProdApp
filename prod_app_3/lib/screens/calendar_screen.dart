@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../widgets/calendar_widget.dart';
 
+// TODO: Provider za day info
+
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({Key? key}) : super(key: key);
 

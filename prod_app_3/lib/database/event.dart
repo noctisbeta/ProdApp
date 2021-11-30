@@ -38,7 +38,7 @@ class Event {
       minute: int.parse(t22),
     );
 
-    final DateTime dateTime = DateTime.parse(json['eventDateTime'] as String);
+    final DateTime dateTime = DateTime.parse(json['eventDate'] as String);
     final String colorStr = json['eventColor'] as String;
     final List<String> c = colorStr.split(':');
     final String color =
@@ -70,6 +70,6 @@ class Event {
         'timeFrom': from.toString(),
         'timeTo': to.toString(),
         'eventColor': color.toString(),
-        'eventDateTime': dateTime.toString(),
+        'eventDate': dateTime.toString().split(' ')[0],
       };
 }

@@ -1,4 +1,4 @@
-import 'event.dart';
+import 'database/event.dart';
 
 List<DateTime> regDays = <DateTime>[];
 List<List<Event>> globalEvents = <List<Event>>[];
