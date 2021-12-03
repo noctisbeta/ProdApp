@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:prod_app_3/screens/calendar_screen.dart';
 // import 'package:prod_app_3/providers/date_provider.dart';
 import 'package:prod_app_3/screens/calorie_adding_screen.dart';
 // import 'package:provider/provider.dart';
@@ -27,7 +28,15 @@ class _CalorieScreenState extends State<CalorieScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const CalendarScreen();
+                  },
+                ),
+              );
+            },
             icon: const Icon(
               Icons.calendar_today,
             ),
