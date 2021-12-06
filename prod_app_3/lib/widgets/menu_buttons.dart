@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../providers/date_provider.dart';
 // import 'package:prod_app_3/screens/day_summary_screen.dart';
 import '../screens/calorie_screen.dart';
+import '../screens/day_summary_screen.dart';
 // import '../screens/day_summary_screen.dart';
 import '../screens/money_summary.dart';
 
@@ -87,7 +88,7 @@ class TimeButton extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) {
                 // return const DaySummaryScreen();
-                return Container();
+                return DaySummaryScreen(date: DateTime.now());
               },
             ),
           );
@@ -143,6 +144,30 @@ class CalorieButton extends StatelessWidget {
           alignment: Alignment.center,
           child: const Text('Calorie Summary'),
         ),
+      ),
+    );
+  }
+}
+
+class CalendarAppBar extends StatelessWidget {
+  const CalendarAppBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return const CalendarScreen();
+            },
+          ),
+        );
+      },
+      icon: const Icon(
+        Icons.calendar_today,
       ),
     );
   }

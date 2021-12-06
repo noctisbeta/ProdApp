@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:prod_app_3/screens/calendar_screen.dart';
-// import 'package:prod_app_3/providers/date_provider.dart';
+import 'package:intl/intl.dart'; // import 'package:prod_app_3/providers/date_provider.dart';
 import 'package:prod_app_3/screens/calorie_adding_screen.dart';
 // import 'package:provider/provider.dart';
 // import 'package:sqflite/sqflite.dart';
 import '../database/calorie_event.dart';
 import '../database/database.dart';
+import '../widgets/menu_buttons.dart';
 
 class CalorieScreen extends StatefulWidget {
   final DateTime dateTime;
@@ -26,21 +25,8 @@ class _CalorieScreenState extends State<CalorieScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const CalendarScreen();
-                  },
-                ),
-              );
-            },
-            icon: const Icon(
-              Icons.calendar_today,
-            ),
-          ),
+        actions: const [
+          CalendarAppBar(),
         ],
         title: Text(
           "${DateFormat('EEEE').format(widget.dateTime)}'s Summary",

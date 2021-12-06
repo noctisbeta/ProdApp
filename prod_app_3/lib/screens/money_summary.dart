@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/menu_buttons.dart';
 
 class MoneySummaryScreen extends StatefulWidget {
   const MoneySummaryScreen({Key? key}) : super(key: key);
@@ -12,6 +13,9 @@ class _MoneySummaryScreenState extends State<MoneySummaryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: const [
+          CalendarAppBar(),
+        ],
         title: const Text('Money'),
         centerTitle: true,
       ),

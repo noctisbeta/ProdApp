@@ -29,7 +29,7 @@ class CalendarWidget extends StatelessWidget {
       onLongPress: (CalendarLongPressDetails dayInfo) =>
           Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => DaySummaryScreen(dayInfo: dayInfo),
+          builder: (context) => DaySummaryScreen(date: dayInfo.date!),
         ),
       ),
     );

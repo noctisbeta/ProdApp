@@ -3,16 +3,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:prod_app_3/database/database.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../database/event.dart';
 import '../globals.dart';
+import '../widgets/menu_buttons.dart';
 import 'event_adding_screen.dart';
 
 class DaySummaryScreen extends StatefulWidget {
-  final CalendarLongPressDetails dayInfo;
+  final DateTime date;
 
-  const DaySummaryScreen({required this.dayInfo, Key? key}) : super(key: key);
+  const DaySummaryScreen({required this.date, Key? key}) : super(key: key);
 
   @override
   _DaySummaryScreenState createState() => _DaySummaryScreenState();
@@ -38,12 +38,12 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
   }
 
   Future<List<Event>> getEvents() async {
-    return DatabaseHelper.instance.getTodaysEvents(widget.dayInfo.date!);
+    return DatabaseHelper.instance.getTodaysEvents(widget.date);
   }
 
   Future<void> getEvents2() async {
     final List<Event> events2 =
-        await DatabaseHelper.instance.getTodaysEvents(widget.dayInfo.date!);
+        await DatabaseHelper.instance.getTodaysEvents(widget.date);
     setState(() {
       events = events2;
     });
@@ -69,9 +69,12 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
     // print(Theme.of(context).canvasColor);
     return Scaffold(
       appBar: AppBar(
+        actions: const [
+          CalendarAppBar(),
+        ],
         centerTitle: true,
         title: Text(
-          "${DateFormat('EEEE').format(widget.dayInfo.date!)}'s Summary",
+          "${DateFormat('EEEE').format(widget.date)}'s Summary",
         ),
       ),
       body: Column(
@@ -151,7 +154,7 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
             events = data as List<Event>;
 
             if (events.isNotEmpty) {
-              dateEventPairs[widget.dayInfo.date!] = events;
+              dateEventPairs[widget.date] = events;
             }
             WidgetsBinding.instance?.addPostFrameCallback((_) {
               setState(() {
