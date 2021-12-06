@@ -17,19 +17,29 @@ class CalorieScreen extends StatefulWidget {
 }
 
 class _CalorieScreenState extends State<CalorieScreen> {
+  String titleText = '';
   Future<List<CalorieEvent>> getEvents() async {
     return DatabaseHelper.instance.getCalorieEvents(widget.dateTime);
+  }
+
+  Future<int> getTotal() async {
+    return DatabaseHelper.instance.getTotalCalories(widget.dateTime);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        actions: const [
-          CalendarAppBar(),
+        actions: [
+          CalendarAppBar(
+            callback: () {
+              setState(() {});
+            },
+          ),
         ],
         title: Text(
-          "${DateFormat('EEEE').format(widget.dateTime)}'s Summary",
+          "${DateFormat('EEEE').format(widget.dateTime)}'s Calories",
         ),
         centerTitle: true,
       ),
@@ -45,7 +55,6 @@ class _CalorieScreenState extends State<CalorieScreen> {
               },
             ),
           ).then((value) {
-            getEvents();
             setState(() {});
           });
         },
@@ -62,10 +71,50 @@ class _CalorieScreenState extends State<CalorieScreen> {
                   color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(10),
                 ),
-              ),
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text('Total'),
+                child: Column(
+                  children: [
+                    const Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        'Total',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    FutureBuilder<int>(
+                      future: getTotal(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            '${snapshot.data!} kcal',
+                            style: const TextStyle(
+                              fontSize: 30,
+                            ),
+                          );
+                        } else {
+                          return Center(
+                            child: Column(
+                              children: const [
+                                SizedBox(
+                                  width: 60,
+                                  height: 60,
+                                  child: CircularProgressIndicator(),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 16),
+                                  child: Text('Awaiting result...'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    const Spacer()
+                  ],
+                ),
               ),
             ],
           ),
@@ -73,8 +122,6 @@ class _CalorieScreenState extends State<CalorieScreen> {
             color: Theme.of(context).colorScheme.primary,
           ),
           FutureBuilder<List<CalorieEvent>>(
-            // future: eventsDB,
-            // future: DatabaseHelper.instance.getCalorieEvents(widget.dateTime),
             future: getEvents(),
             builder: (
               BuildContext context,
@@ -86,13 +133,22 @@ class _CalorieScreenState extends State<CalorieScreen> {
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        margin: const EdgeInsets.all(20),
-                        padding: const EdgeInsets.all(20),
+                        margin: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                        padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                        child: Text(snapshot.data![index].food),
+                        child: Row(
+                          children: [
+                            Text(snapshot.data![index].food),
+                            Text(' (${snapshot.data![index].foodAmount})'),
+                            const Spacer(),
+                            Text(
+                              '${snapshot.data![index].calories * snapshot.data![index].foodAmount}kcal',
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),

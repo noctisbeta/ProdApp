@@ -17,10 +17,6 @@ class MoneyEvent {
     required this.dateTime,
   });
 
-  // factory MoneyEvent.fromMap(Map<String, dynamic> json) {
-
-  // }
-
   @override
   String toString() {
     return location +
@@ -39,4 +35,22 @@ class MoneyEvent {
         'time': time.toString(),
         'dateTime': dateTime.toString()
       };
+
+  factory MoneyEvent.fromMap(Map<String, dynamic> json) {
+    final DateTime dateTime = DateTime.parse(json['date'] as String);
+    final String colorStr = json['eventColor'] as String;
+    final List<String> c = colorStr.split(':');
+    final String color =
+        c[1].substring(c[1].indexOf('(') + 1, c[1].lastIndexOf(')') - 1);
+
+    final MoneyEvent newEvent = MoneyEvent(
+      location: json['location'] as String,
+      forWhat: json['forWhat'] as String,
+      color: Color(int.parse(color)),
+      amount: json['amount'] as double,
+      time: TimeOfDay.now(),
+      dateTime: dateTime,
+    );
+    return newEvent;
+  }
 }

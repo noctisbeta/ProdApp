@@ -150,7 +150,9 @@ class CalorieButton extends StatelessWidget {
 }
 
 class CalendarAppBar extends StatelessWidget {
+  final VoidCallback callback;
   const CalendarAppBar({
+    required this.callback,
     Key? key,
   }) : super(key: key);
 
@@ -158,13 +160,22 @@ class CalendarAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) {
-              return const CalendarScreen();
-            },
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) {
+        //       return const CalendarScreen();
+        //     },
+        //   ),
+        // );
+        final newDate = showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime.now(),
+          lastDate: DateTime.now().add(
+            const Duration(days: 3),
           ),
         );
+        callback();
       },
       icon: const Icon(
         Icons.calendar_today,

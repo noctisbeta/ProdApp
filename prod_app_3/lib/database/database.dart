@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'calorie_event.dart';
 import 'event.dart';
+import 'money_event.dart';
 
 class DatabaseHelper {
   DatabaseHelper._privateConstructor();
@@ -55,6 +56,19 @@ class DatabaseHelper {
     );
     ''',
     );
+
+    await db.execute(
+      '''
+      CREATE TABLE calorieTable (
+      moneyEventID INTEGER PRIMARY KEY,
+      location TEXT NOT NULL,
+      forWhat TEXT NOT NULL,
+      color TEXT NOT NULL,
+      time TEXT NOT NULL,
+      dateTime TEXT NOT NULL
+    );
+    ''',
+    );
   }
 
   Future<List<Event>> getEvents() async {
@@ -95,6 +109,41 @@ class DatabaseHelper {
       eventList.add(CalorieEvent.fromMap(pair));
     }
     return eventList;
+  }
+
+  Future<List<MoneyEvent>> getMoneyEvents(DateTime day) async {
+    final Database db = await instance.database;
+    final List<Map<String, dynamic>> events = await db.query(
+      'moneyTable',
+      where: 'date = ?',
+      whereArgs: [day.toString().split(' ')[0]],
+    );
+    final List<MoneyEvent> eventList = [];
+    for (final pair in events) {
+      eventList.add(MoneyEvent.fromMap(pair));
+    }
+    return eventList;
+  }
+
+  Future<int> getTotalCalories(DateTime day) async {
+    final Database db = await instance.database;
+    final List<Map<String, dynamic>> calories = await db.query(
+      'calorieTable',
+      where: 'date = ?',
+      whereArgs: [day.toString().split(' ')[0]],
+      columns: ['calories', 'foodAmount'],
+    );
+    final List<Map<String, dynamic>> amounts = await db.query(
+      'calorieTable',
+      where: 'date = ?',
+      whereArgs: [day.toString().split(' ')[0]],
+      columns: ['foodAmount'],
+    );
+    int sum_ = 0;
+    for (final mapItem in calories) {
+      sum_ += (mapItem['calories'] as int) * (mapItem['foodAmount'] as int);
+    }
+    return sum_;
   }
 
   Future<int> add(Event event) async {

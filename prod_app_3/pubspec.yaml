@@ -51,6 +51,8 @@ dependencies:
 
   number_selection: ^1.0.0
 
+  quiver: ^3.0.1+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

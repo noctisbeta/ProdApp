@@ -13,8 +13,12 @@ class _MoneySummaryScreenState extends State<MoneySummaryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: const [
-          CalendarAppBar(),
+        actions: [
+          CalendarAppBar(
+            callback: () {
+              setState(() {});
+            },
+          ),
         ],
         title: const Text('Money'),
         centerTitle: true,

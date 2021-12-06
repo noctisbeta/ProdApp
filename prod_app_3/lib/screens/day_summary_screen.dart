@@ -69,8 +69,12 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
     // print(Theme.of(context).canvasColor);
     return Scaffold(
       appBar: AppBar(
-        actions: const [
-          CalendarAppBar(),
+        actions: [
+          CalendarAppBar(
+            callback: () {
+              setState(() {});
+            },
+          ),
         ],
         centerTitle: true,
         title: Text(
