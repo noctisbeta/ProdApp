@@ -41,9 +41,14 @@ class MyApp extends StatelessWidget {
           textButtonTheme: TextButtonThemeData(
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(const Color(0xFFF2AEB4)),
             ),
           ),
           inputDecorationTheme: const InputDecorationTheme(
+            helperStyle: TextStyle(
+              color: Color(0xFFF2AEB4),
+            ),
             border: OutlineInputBorder(),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(

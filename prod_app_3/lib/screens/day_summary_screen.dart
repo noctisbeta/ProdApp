@@ -69,11 +69,9 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
     // print(Theme.of(context).canvasColor);
     return Scaffold(
       appBar: AppBar(
-        actions: [
+        actions: const [
           CalendarAppBar(
-            callback: () {
-              setState(() {});
-            },
+            screenName: 'time',
           ),
         ],
         centerTitle: true,
@@ -88,12 +86,12 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
               padding: const EdgeInsets.symmetric(vertical: 50),
               margin: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.indigoAccent,
+                color: Theme.of(context).colorScheme.primary,
                 borderRadius: BorderRadius.circular(10),
               ),
               alignment: Alignment.center,
               child: FutureBuilder<List<Event>>(
-                future: eventsDB,
+                future: getEvents(),
                 builder: (
                   BuildContext context,
                   AsyncSnapshot<List<Event>> snapshot,
@@ -141,7 +139,6 @@ class _DaySummaryScreenState extends State<DaySummaryScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.indigoAccent,
         onPressed: () async {
           final data = await Navigator.push(
             context,
@@ -297,7 +294,8 @@ class CircleFramePainter extends CustomPainter {
 
     final fillBrush = Paint()
       // ..color = Colors.indigoAccent[100]!
-      ..color = const Color.fromARGB(150, 70, 92, 215)
+      // ..color = const Color.fromARGB(150, 70, 92, 215)
+      ..color = Colors.pink[200]!
       ..style = PaintingStyle.stroke
       ..strokeWidth = 40;
     // canvas.drawArc(rect, radStart, radEnd, false, fillBrush);
@@ -307,56 +305,6 @@ class CircleFramePainter extends CustomPainter {
     path.reset();
     path.arcTo(rect, 0, -1, true);
     canvas.drawPath(path, fillBrush);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
-}
-
-class CircleFramePainter2 extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final centerX = size.width / 2;
-    final centerY = size.height / 2;
-    final center = Offset(centerX, centerY);
-    final radius = min(centerX, centerY);
-
-    // var fillBrush2 = Paint()..color = Color(0xff303030);
-    final fillBrush2 = Paint()..color = Colors.indigoAccent;
-    canvas.drawCircle(center, radius, fillBrush2);
-
-    final fillBrush3 = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
-      ..color = Colors.black;
-    canvas.drawCircle(center, radius, fillBrush3);
-    canvas.drawCircle(center, size.width - 8.8, fillBrush3);
-
-    // final fillBrush4 = Paint()
-    //   ..style = PaintingStyle.stroke
-    //   ..strokeWidth = 2
-    //   ..color = Colors.black;
-
-    // final fillBrush5 = Paint()
-    //   ..style = PaintingStyle.fill
-    //   ..strokeWidth = 2
-    //   ..color = Colors.black;
-
-    // final currentTime = DateTime.now();
-    // // print(currentTime.hour);
-    // final currentTimeAngle =
-    //     currentTime.hour * pi / 12 + currentTime.minute * pi / 720 - pi / 2;
-    // // canvas.translate(centerX, centerY);
-    // // canvas.rotate(currentTimeAngle);
-    // final hourX = centerX + cos(currentTimeAngle) * radius;
-    // final hourY = centerY + sin(currentTimeAngle) * radius;
-    // final hourXe = centerX + cos(currentTimeAngle) * 89;
-    // final hourYe = centerX + sin(currentTimeAngle) * 89;
-
-    // // canvas.drawLine(Offset(hourX, hourY), Offset(hourXe, hourYe), fillBrush4);
-    // canvas.drawCircle(Offset(hourXe, hourYe), 3, fillBrush5);
-
-    // canvas.drawArc(rect, currentTimeAngle, currentTimeAngle, true, fillBrush4);
   }
 
   @override
@@ -501,8 +449,8 @@ class ArcPainter extends CustomPainter {
         centerY + radius * sin(radStart),
       );
       final brush = Paint()
-        ..color = Colors.indigoAccent
-        // ..color = Colors.red
+        // ..color = Colors.indigoAccent
+        ..color = const Color(0xFFF2AEB4)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3;
       canvas.drawPath(path, brush);

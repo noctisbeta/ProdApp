@@ -31,11 +31,9 @@ class _CalorieScreenState extends State<CalorieScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        actions: [
+        actions: const [
           CalendarAppBar(
-            callback: () {
-              setState(() {});
-            },
+            screenName: 'calories',
           ),
         ],
         title: Text(
@@ -93,15 +91,13 @@ class _CalorieScreenState extends State<CalorieScreen> {
                               fontSize: 30,
                             ),
                           );
+                        } else if (snapshot.hasError) {
+                          return const Text('database empty');
                         } else {
                           return Center(
                             child: Column(
                               children: const [
-                                SizedBox(
-                                  width: 60,
-                                  height: 60,
-                                  child: CircularProgressIndicator(),
-                                ),
+                                CircularProgressIndicator(),
                                 Padding(
                                   padding: EdgeInsets.only(top: 16),
                                   child: Text('Awaiting result...'),
@@ -153,15 +149,13 @@ class _CalorieScreenState extends State<CalorieScreen> {
                     },
                   ),
                 );
+              } else if (snapshot.hasError) {
+                return const Text('database empty');
               } else {
                 return Center(
                   child: Column(
                     children: const [
-                      SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: CircularProgressIndicator(),
-                      ),
+                      CircularProgressIndicator(),
                       Padding(
                         padding: EdgeInsets.only(top: 16),
                         child: Text('Awaiting result...'),

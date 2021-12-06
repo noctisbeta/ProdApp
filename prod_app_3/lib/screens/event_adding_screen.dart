@@ -123,13 +123,9 @@ class _EventAddingPageState extends State<EventAddingPage> {
               const Expanded(child: SizedBox()),
               Center(
                 child: TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.indigoAccent,
-                  ),
                   onPressed: confirmSubmission,
                   child: const Text(
                     'CONFIRM',
-                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),

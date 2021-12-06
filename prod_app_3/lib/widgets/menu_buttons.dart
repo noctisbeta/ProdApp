@@ -54,7 +54,9 @@ class MoneyButton extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return const MoneySummaryScreen();
+                return MoneySummaryScreen(
+                  dateTime: DateTime.now(),
+                );
               },
             ),
           );
@@ -149,25 +151,23 @@ class CalorieButton extends StatelessWidget {
   }
 }
 
-class CalendarAppBar extends StatelessWidget {
-  final VoidCallback callback;
+class CalendarAppBar extends StatefulWidget {
+  final String screenName;
   const CalendarAppBar({
-    required this.callback,
+    required this.screenName,
     Key? key,
   }) : super(key: key);
 
   @override
+  State<CalendarAppBar> createState() => _CalendarAppBarState();
+}
+
+class _CalendarAppBarState extends State<CalendarAppBar> {
+  @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) {
-        //       return const CalendarScreen();
-        //     },
-        //   ),
-        // );
-        final newDate = showDatePicker(
+      onPressed: () async {
+        final newDate = await showDatePicker(
           context: context,
           initialDate: DateTime.now(),
           firstDate: DateTime.now(),
@@ -175,7 +175,32 @@ class CalendarAppBar extends StatelessWidget {
             const Duration(days: 3),
           ),
         );
-        callback();
+        if (newDate == null) {
+          return;
+        }
+        if (!mounted) return;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) {
+              switch (widget.screenName) {
+                case 'calories':
+                  return CalorieScreen(
+                    dateTime: newDate,
+                  );
+                case 'time':
+                  return DaySummaryScreen(
+                    date: newDate,
+                  );
+                case 'money':
+                  return MoneySummaryScreen(
+                    dateTime: newDate,
+                  );
+                default:
+                  return Container();
+              }
+            },
+          ),
+        );
       },
       icon: const Icon(
         Icons.calendar_today,

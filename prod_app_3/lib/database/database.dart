@@ -32,7 +32,7 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     await db.execute(
       '''
-      CREATE TABLE eventsTable (
+      CREATE TABLE IF NOT EXISTS eventsTable (
       eventID INTEGER PRIMARY KEY,
       eventTitle TEXT NOT NULL,
       timeFrom TEXT NOT NULL,
@@ -45,7 +45,7 @@ class DatabaseHelper {
 
     await db.execute(
       '''
-      CREATE TABLE calorieTable (
+      CREATE TABLE IF NOT EXISTS calorieTable (
       calorieEventID INTEGER PRIMARY KEY,
       food TEXT NOT NULL,
       foodAmount INTEGER NOT NULL,
@@ -59,7 +59,7 @@ class DatabaseHelper {
 
     await db.execute(
       '''
-      CREATE TABLE calorieTable (
+      CREATE TABLE IF NOT EXISTS calorieTable (
       moneyEventID INTEGER PRIMARY KEY,
       location TEXT NOT NULL,
       forWhat TEXT NOT NULL,
@@ -133,12 +133,7 @@ class DatabaseHelper {
       whereArgs: [day.toString().split(' ')[0]],
       columns: ['calories', 'foodAmount'],
     );
-    final List<Map<String, dynamic>> amounts = await db.query(
-      'calorieTable',
-      where: 'date = ?',
-      whereArgs: [day.toString().split(' ')[0]],
-      columns: ['foodAmount'],
-    );
+
     int sum_ = 0;
     for (final mapItem in calories) {
       sum_ += (mapItem['calories'] as int) * (mapItem['foodAmount'] as int);
