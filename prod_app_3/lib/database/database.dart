@@ -47,12 +47,13 @@ class DatabaseHelper {
       '''
       CREATE TABLE IF NOT EXISTS calorieTable (
       calorieEventID INTEGER PRIMARY KEY,
-      food TEXT NOT NULL,
+      foodName TEXT NOT NULL,
       foodAmount INTEGER NOT NULL,
       calories INTEGER NOT NULL,
       dateTime TEXT NOT NULL,
       date TEXT NOT NULL,
-      time TEXT NOT NULL
+      time TEXT NOT NULL,
+      meal TEXT NOT NULL
     );
     ''',
     );
@@ -97,13 +98,26 @@ class DatabaseHelper {
     return eventList;
   }
 
-  Future<List<CalorieEvent>> getCalorieEvents(DateTime day) async {
+  Future<List<CalorieEvent>> getCalorieEvents(
+    DateTime day, {
+    String? mealType,
+  }) async {
     final Database db = await instance.database;
-    final List<Map<String, dynamic>> events = await db.query(
-      'calorieTable',
-      where: 'date = ?',
-      whereArgs: [day.toString().split(' ')[0]],
-    );
+    final List<Map<String, dynamic>> events;
+    if (mealType == null) {
+      events = await db.query(
+        'calorieTable',
+        where: 'date = ?',
+        whereArgs: [day.toString().split(' ')[0]],
+      );
+    } else {
+      events = await db.query(
+        'calorieTable',
+        where: 'date = ? and meal = ?',
+        whereArgs: [day.toString().split(' ')[0], mealType],
+      );
+    }
+
     final List<CalorieEvent> eventList = [];
     for (final pair in events) {
       eventList.add(CalorieEvent.fromMap(pair));

@@ -170,9 +170,9 @@ class _CalendarAppBarState extends State<CalendarAppBar> {
         final newDate = await showDatePicker(
           context: context,
           initialDate: DateTime.now(),
-          firstDate: DateTime.now(),
+          firstDate: DateTime.parse('2021-12-01'),
           lastDate: DateTime.now().add(
-            const Duration(days: 3),
+            const Duration(days: 7),
           ),
         );
         if (newDate == null) {
