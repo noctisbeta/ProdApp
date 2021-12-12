@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../database/database.dart';
 import '../database/money_event.dart';
 import '../widgets/menu_buttons.dart';
+import 'money_adding_screen.dart';
 
 class MoneySummaryScreen extends StatefulWidget {
   final DateTime dateTime;
@@ -34,7 +35,15 @@ class _MoneySummaryScreenState extends State<MoneySummaryScreen> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return const MoneyAddingScreen();
+              },
+            ),
+          );
+        },
         child: const Icon(Icons.add),
       ),
       body: Column(

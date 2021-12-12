@@ -16,7 +16,8 @@ class CalorieAddingScreen extends StatefulWidget {
 class _CalorieAddingScreenState extends State<CalorieAddingScreen> {
   TextEditingController foodCtl = TextEditingController();
   TextEditingController calsCtl = TextEditingController();
-  TextEditingController mealCtl = TextEditingController();
+  // TextEditingController mealCtl = TextEditingController();
+  String meal = '';
   TextEditingController timeCtl = TextEditingController();
   int foodAmount = 1;
   TimeOfDay? time;
@@ -37,7 +38,6 @@ class _CalorieAddingScreenState extends State<CalorieAddingScreen> {
         margin: const EdgeInsets.all(10),
         padding: const EdgeInsets.all(10),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
@@ -63,76 +63,69 @@ class _CalorieAddingScreenState extends State<CalorieAddingScreen> {
                 ),
               ],
             ),
+            const SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
                 Expanded(
-                  child: DropdownButton<String>(
-                    value: dropdownValue,
-                    icon: const Icon(Icons.arrow_downward),
-                    iconSize: 14,
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
+                  flex: 2,
+                  child: SizedBox(
+                    height: 59,
+                    child: DropdownButtonFormField(
+                      // style: TextStyle(
+                      //   color: Theme.of(context).colorScheme.primary,
+                      // ),
+                      dropdownColor: Theme.of(context).colorScheme.primary,
+                      decoration: const InputDecoration(
+                        labelText: 'Meal',
+                      ),
+                      icon: const Icon(
+                        Icons.arrow_downward,
+                        color: Colors.white,
+                      ),
+                      iconSize: 15,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue!;
+                          meal = newValue;
+                        });
+                      },
+                      items: <String>['Breakfast', 'Lunch', 'Dinner', 'Snack']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue!;
-                      });
-                    },
-                    items: <String>['Breakfast', 'Lunch', 'Dinner', 'Snack']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
                   ),
                 ),
-                // Expanded(
-                //   flex: 2,
-                //   child: Container(
-                //     margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                //     child: TextFormField(
-                //       controller: mealCtl,
-                //       decoration: const InputDecoration(
-                //         labelText: 'Meal',
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 const Spacer(),
                 Expanded(
                   flex: 2,
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: TextFormField(
-                      onTap: () async {
-                        final TimeOfDay? newTime = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.now(),
-                          // hourLabelText: 'a',
-                          minuteLabelText: 'aaaaa',
-                          // helpText: 'a',
-                        );
-                        if (newTime == null) {
-                          return;
-                        }
-                        setState(() {
-                          timeCtl.text = newTime
-                              .toString()
-                              .split('(')[1]
-                              .replaceFirst(')', '');
-                          time = newTime;
-                        });
-                      },
-                      showCursor: false,
-                      keyboardType: TextInputType.none,
-                      controller: timeCtl,
-                      decoration: const InputDecoration(
-                        labelText: 'Time',
-                      ),
+                  child: TextFormField(
+                    onTap: () async {
+                      final TimeOfDay? newTime = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      if (newTime == null) {
+                        return;
+                      }
+                      setState(() {
+                        timeCtl.text = newTime
+                            .toString()
+                            .split('(')[1]
+                            .replaceFirst(')', '');
+                        time = newTime;
+                      });
+                    },
+                    showCursor: false,
+                    keyboardType: TextInputType.none,
+                    controller: timeCtl,
+                    decoration: const InputDecoration(
+                      labelText: 'Time',
                     ),
                   ),
                 ),
@@ -167,7 +160,7 @@ class _CalorieAddingScreenState extends State<CalorieAddingScreen> {
               onPressed: () {
                 if (foodCtl.text == '' ||
                     calsCtl.text == '' ||
-                    mealCtl.text == '' ||
+                    meal == '' ||
                     time == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -188,7 +181,7 @@ class _CalorieAddingScreenState extends State<CalorieAddingScreen> {
                   foodAmount: foodAmount,
                   calories: int.parse(calsCtl.text),
                   dateTime: widget.dateTime,
-                  meal: mealCtl.text,
+                  meal: meal,
                   time: time!,
                 );
 

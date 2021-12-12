@@ -60,7 +60,7 @@ class DatabaseHelper {
 
     await db.execute(
       '''
-      CREATE TABLE IF NOT EXISTS calorieTable (
+      CREATE TABLE IF NOT EXISTS moneyTable (
       moneyEventID INTEGER PRIMARY KEY,
       location TEXT NOT NULL,
       forWhat TEXT NOT NULL,

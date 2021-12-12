@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart'; // import 'package:prod_app_3/providers/date_provider.dart';
 import 'package:prod_app_3/screens/calorie_adding_screen.dart';
 import '../database/calorie_event.dart';

@@ -74,6 +74,7 @@ class MyApp extends StatelessWidget {
             ),
             subtitle1: const TextStyle(
               color: Colors.white,
+              fontSize: 16,
             ),
             subtitle2: const TextStyle(
               color: Colors.blue,
