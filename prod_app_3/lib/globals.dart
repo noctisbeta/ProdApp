@@ -1,5 +1,5 @@
-import 'database/event.dart';
+import 'database/time_event.dart';
 
 List<DateTime> regDays = <DateTime>[];
-List<List<Event>> globalEvents = <List<Event>>[];
-Map<DateTime, List<Event>> dateEventPairs = <DateTime, List<Event>>{};
+List<List<TimeEvent>> globalEvents = <List<TimeEvent>>[];
+Map<DateTime, List<TimeEvent>> dateEventPairs = <DateTime, List<TimeEvent>>{};

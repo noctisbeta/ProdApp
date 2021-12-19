@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:prod_app_3/screens/calorie_screen.dart';
-import 'package:prod_app_3/screens/day_summary_screen.dart';
-import 'package:prod_app_3/screens/money_summary.dart';
+import 'package:prod_app_3/screens/money_summary_screen.dart';
+import 'package:prod_app_3/screens/time_summary_screen.dart';
 
 import '../widgets/menu_buttons.dart';
 
@@ -22,7 +22,7 @@ class _MenuScreenState extends State<MenuScreen> {
     MoneySummaryScreen(
       dateTime: DateTime.now(),
     ),
-    DaySummaryScreen(
+    TimeSummaryScreen(
       dateTime: DateTime.now(),
     ),
     CalorieScreen(
@@ -86,7 +86,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   newScreen = MoneySummaryScreen(dateTime: newDate);
                   break;
                 case 1:
-                  newScreen = DaySummaryScreen(dateTime: newDate);
+                  newScreen = TimeSummaryScreen(dateTime: newDate);
                   break;
                 case 2:
                   newScreen = CalorieScreen(dateTime: newDate);

@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import '../providers/date_provider.dart';
 // import 'package:prod_app_3/screens/day_summary_screen.dart';
 import '../screens/calorie_screen.dart';
-import '../screens/day_summary_screen.dart';
 // import '../screens/day_summary_screen.dart';
-import '../screens/money_summary.dart';
+import '../screens/money_summary_screen.dart';
+import '../screens/time_summary_screen.dart';
 
 class CalendarButton extends StatelessWidget {
   const CalendarButton({Key? key}) : super(key: key);
@@ -90,7 +90,7 @@ class TimeButton extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) {
                 // return const DaySummaryScreen();
-                return DaySummaryScreen(dateTime: DateTime.now());
+                return TimeSummaryScreen(dateTime: DateTime.now());
               },
             ),
           );
@@ -192,7 +192,7 @@ class _CalendarAppBarState extends State<CalendarAppBar> {
                     dateTime: newDate,
                   );
                 case 'time':
-                  return DaySummaryScreen(
+                  return TimeSummaryScreen(
                     dateTime: newDate,
                   );
                 case 'money':
@@ -233,7 +233,7 @@ class _NavBarState extends State<NavBar> {
         CalorieScreen(
           dateTime: DateTime.now(),
         ),
-        DaySummaryScreen(
+        TimeSummaryScreen(
           dateTime: DateTime.now(),
         ),
       ];

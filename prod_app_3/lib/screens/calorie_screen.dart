@@ -29,20 +29,8 @@ class _CalorieScreenState extends State<CalorieScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      // appBar: AppBar(
-      //   actions: [
-      //     CalendarAppBar(
-      //       changeDateTime: (x){},
-      //       screenName: 'calories',
-      //       currentDate: widget.dateTime,
-      //     ),
-      //   ],
-      //   title: Text(
-      //     "${DateFormat('EEEE').format(widget.dateTime)}'s Calories",
-      //   ),
-      //   centerTitle: true,
-      // ),
       floatingActionButton: FloatingActionButton(
+        heroTag: null,
         child: const Icon(Icons.add),
         onPressed: () {
           Navigator.of(context).push(

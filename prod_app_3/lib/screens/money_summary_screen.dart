@@ -23,18 +23,8 @@ class _MoneySummaryScreenState extends State<MoneySummaryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   actions: [
-      //     CalendarAppBar(
-      //       changeDateTime: (x) {},
-      //       screenName: 'money',
-      //       currentDate: widget.dateTime,
-      //     ),
-      //   ],
-      //   title: Text("${DateFormat('EEEE').format(widget.dateTime)}'s Money"),
-      //   centerTitle: true,
-      // ),
       floatingActionButton: FloatingActionButton(
+        heroTag: null,
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(

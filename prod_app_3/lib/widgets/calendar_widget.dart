@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 // import 'package:flutter/foundation.dart';
 // import 'dart:developer';
-import '../screens/day_summary_screen.dart';
+import '../screens/time_summary_screen.dart';
 
 class CalendarWidget extends StatelessWidget {
   @override
@@ -29,7 +29,7 @@ class CalendarWidget extends StatelessWidget {
       onLongPress: (CalendarLongPressDetails dayInfo) =>
           Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => DaySummaryScreen(dateTime: dayInfo.date!),
+          builder: (context) => TimeSummaryScreen(dateTime: dayInfo.date!),
         ),
       ),
     );

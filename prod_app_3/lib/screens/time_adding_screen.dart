@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:prod_app_3/database/database.dart';
 
-import '../database/event.dart';
+import '../database/time_event.dart';
 
-class EventAddingPage extends StatefulWidget {
-  final List<Event> events;
+class TimeAddingPage extends StatefulWidget {
+  final List<TimeEvent> events;
 
-  const EventAddingPage({Key? key, required this.events}) : super(key: key);
+  const TimeAddingPage({Key? key, required this.events}) : super(key: key);
 
   @override
-  _EventAddingPageState createState() => _EventAddingPageState();
+  _TimeAddingPageState createState() => _TimeAddingPageState();
 }
 
-class _EventAddingPageState extends State<EventAddingPage> {
+class _TimeAddingPageState extends State<TimeAddingPage> {
   TimeOfDay? time;
   TextEditingController timeCtlFrom = TextEditingController();
   TextEditingController timeCtlTo = TextEditingController();
@@ -194,35 +194,18 @@ class _EventAddingPageState extends State<EventAddingPage> {
     // final isValid = formKey.currentState?.validate();
 
     // if (isValid == true && isOkayColor()) {
-    final Event newEvent = Event(
+    final TimeEvent newEvent = TimeEvent(
       title: nameCtl.text,
       from: fromTime!,
       to: toTime!,
       color: currentColor,
       dateTime: DateTime.now(),
     );
-    // print('time: ' + fromTime.toString());
-    // print('date: ' + DateTime.now().toString());
-    // print('color: ' + currentColor.toString());
+
     await DatabaseHelper.instance.add(newEvent);
-    // Navigator.pop(context, widget.events);
 
     if (!mounted) return;
     Navigator.of(context).pop();
-
-    // WidgetsBinding.instance?.addPostFrameCallback((_)  {
-    //   final Event newEvent = Event(
-    //     title: nameCtl.text,
-    //     from: fromTime!,
-    //     to: toTime!,
-    //     color: currentColor,
-    //     dateTime: DateTime.now(),
-    //   );
-    //   widget.events.add(newEvent);
-
-    //   Navigator.pop(context, widget.events);
-    // });
-    // }
   }
 
   String? isOkayTitle(String? title) {

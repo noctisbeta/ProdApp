@@ -6,8 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'calorie_event.dart';
-import 'event.dart';
 import 'money_event.dart';
+import 'time_event.dart';
 
 class DatabaseHelper {
   DatabaseHelper._privateConstructor();
@@ -73,28 +73,28 @@ class DatabaseHelper {
     );
   }
 
-  Future<List<Event>> getEvents() async {
+  Future<List<TimeEvent>> getEvents() async {
     final Database db = await instance.database;
     final List<Map<String, dynamic>> events = await db.query('events');
     // final List<Event> eventList =
     //     events.isNotEmpty ? events.map((e) => Event.fromMap(e)).toList() : [];
-    final List<Event> eventList = [];
+    final List<TimeEvent> eventList = [];
     for (final pair in events) {
-      eventList.add(Event.fromMap(pair));
+      eventList.add(TimeEvent.fromMap(pair));
     }
     return eventList;
   }
 
-  Future<List<Event>> getTodaysEvents(DateTime day) async {
+  Future<List<TimeEvent>> getTodaysEvents(DateTime day) async {
     final Database db = await instance.database;
     final List<Map<String, dynamic>> events = await db.query(
       'eventsTable',
       where: 'eventDate = ?',
       whereArgs: [day.toString().split(' ')[0]],
     );
-    final List<Event> eventList = [];
+    final List<TimeEvent> eventList = [];
     for (final pair in events) {
-      eventList.add(Event.fromMap(pair));
+      eventList.add(TimeEvent.fromMap(pair));
     }
     return eventList;
   }
@@ -156,7 +156,7 @@ class DatabaseHelper {
     return sum_;
   }
 
-  Future<int> add(Event event) async {
+  Future<int> add(TimeEvent event) async {
     final Database db = await instance.database;
     return db.insert(
       'eventsTable',

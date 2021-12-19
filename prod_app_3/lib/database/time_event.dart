@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Event {
+class TimeEvent {
   final String title;
   final TimeOfDay from;
   final TimeOfDay to;
   final Color color;
   final DateTime dateTime;
 
-  Event({
+  TimeEvent({
     required this.title,
     required this.from,
     required this.to,
@@ -15,7 +15,7 @@ class Event {
     required this.dateTime,
   });
 
-  factory Event.fromMap(Map<String, dynamic> json) {
+  factory TimeEvent.fromMap(Map<String, dynamic> json) {
     final String fromStr = json['timeFrom'] as String;
     final String fromStrTime = fromStr.substring(10, 15);
     final List<String> l = fromStrTime.split(':');
@@ -44,7 +44,7 @@ class Event {
     final String color =
         c[1].substring(c[1].indexOf('(') + 1, c[1].lastIndexOf(')') - 1);
 
-    final Event newEvent = Event(
+    final TimeEvent newEvent = TimeEvent(
       title: json['eventTitle'] as String,
       from: timeFrom,
       to: timeTo,
