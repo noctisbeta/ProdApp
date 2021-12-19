@@ -38,14 +38,13 @@ class TimeEvent {
       minute: int.parse(t22),
     );
 
-    final DateTime dateTime = DateTime.parse(json['eventDate'] as String);
-    final String colorStr = json['eventColor'] as String;
-    final List<String> c = colorStr.split(':');
-    final String color =
-        c[1].substring(c[1].indexOf('(') + 1, c[1].lastIndexOf(')') - 1);
+    final DateTime dateTime = DateTime.parse(json['date'] as String);
+    final String c = json['color'] as String;
+
+    final String color = c.substring(c.indexOf('0'), c.indexOf('0') + 10);
 
     final TimeEvent newEvent = TimeEvent(
-      title: json['eventTitle'] as String,
+      title: json['title'] as String,
       from: timeFrom,
       to: timeTo,
       color: Color(int.parse(color)),
@@ -65,11 +64,10 @@ class TimeEvent {
   }
 
   Map<String, dynamic> toMap() => {
-        // 'eventID': 0,
-        'eventTitle': title,
+        'title': title,
         'timeFrom': from.toString(),
         'timeTo': to.toString(),
-        'eventColor': color.toString(),
-        'eventDate': dateTime.toString().split(' ')[0],
+        'color': color.toString(),
+        'date': dateTime.toString().split(' ')[0],
       };
 }

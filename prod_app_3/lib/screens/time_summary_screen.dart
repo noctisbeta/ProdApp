@@ -16,28 +16,9 @@ class TimeSummaryScreen extends StatefulWidget {
 }
 
 class _TimeSummaryScreenState extends State<TimeSummaryScreen> {
-  List<TimeEvent> events = [];
-  List<Arc>? arcs = [];
-  List<Widget> arcsDisplay = [];
-
   Future<List<TimeEvent>> getEvents() async {
-    return DatabaseHelper.instance.getTodaysEvents(widget.dateTime);
+    return DatabaseHelper.instance.getTimeEvents(widget.dateTime);
   }
-
-  // void buildArcs() {
-  //   if (events.isNotEmpty) {
-  //     for (int i = 0; i < events.length; i++) {
-  //       arcs?.add(Arc(event: events[i]));
-  //       arcsDisplay.add(
-  //         SizedBox(
-  //           height: 100,
-  //           width: 100,
-  //           child: Arc(event: events[i]),
-  //         ),
-  //       );
-  //     }
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +52,8 @@ class _TimeSummaryScreenState extends State<TimeSummaryScreen> {
                         painter: CircleFramePainter(),
                       ),
                     ),
-                    ...snapshot.data!.map((e) => Arc(event: e)),
+                    if (snapshot.hasData && snapshot.data!.isNotEmpty)
+                      ...snapshot.data!.map((e) => Arc(event: e)),
                     SizedBox(
                       height: 100,
                       width: 100,
@@ -90,7 +72,8 @@ class _TimeSummaryScreenState extends State<TimeSummaryScreen> {
                     spacing: 20,
                     runSpacing: 10,
                     children: [
-                      ...snapshot.data!.map((e) => LegendEntry(event: e))
+                      if (snapshot.hasData && snapshot.data!.isNotEmpty)
+                        ...snapshot.data!.map((e) => LegendEntry(event: e))
                     ],
                   ),
                 ),
@@ -101,13 +84,17 @@ class _TimeSummaryScreenState extends State<TimeSummaryScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: null,
-        onPressed: () {
-          Navigator.push(
-            context,
+        onPressed: () async {
+          final List<TimeEvent> events = await getEvents();
+          if (!mounted) return;
+          Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => TimeAddingPage(
-                events: events,
-              ),
+              builder: (context) {
+                return TimeAddingPage(
+                  selectedDate: widget.dateTime,
+                  events: events,
+                );
+              },
             ),
           ).then((value) {
             setState(() {});
@@ -117,22 +104,6 @@ class _TimeSummaryScreenState extends State<TimeSummaryScreen> {
       ),
     );
   }
-
-  // List<Widget> toWidgetList() {
-  //   if (events.isNotEmpty) {
-  //     final List<Widget> list = <Widget>[];
-  //     final List<String> titles = <String>[];
-  //     for (int i = 0; i < events.length; i++) {
-  //       if (!titles.contains(events[i].title)) {
-  //         titles.add(events[i].title);
-  //         list.add(LegendEntry(event: events[i]));
-  //       }
-  //     }
-  //     return list;
-  //   } else {
-  //     return [];
-  //   }
-  // }
 }
 
 class LegendEntry extends StatelessWidget {

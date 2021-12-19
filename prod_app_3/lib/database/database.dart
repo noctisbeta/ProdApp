@@ -19,7 +19,7 @@ class DatabaseHelper {
   Future<Database> _initDatabase() async {
     final Directory documentsDirectory =
         await getApplicationDocumentsDirectory();
-    final String path = join(documentsDirectory.path, 'events.db');
+    final String path = join(documentsDirectory.path, 'myDatabase.db');
     // print(documentsDirectory.path + 'ala');
 
     return openDatabase(
@@ -32,13 +32,13 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     await db.execute(
       '''
-      CREATE TABLE IF NOT EXISTS eventsTable (
+      CREATE TABLE IF NOT EXISTS timeTable (
       eventID INTEGER PRIMARY KEY,
-      eventTitle TEXT NOT NULL,
+      title TEXT NOT NULL,
       timeFrom TEXT NOT NULL,
       timeTo TEXT NOT NULL,
-      eventColor TEXT NOT NULL,
-      eventDate TEXT NOT NULL
+      color TEXT NOT NULL,
+      date TEXT NOT NULL
     );
     ''',
     );
@@ -73,26 +73,19 @@ class DatabaseHelper {
     );
   }
 
-  Future<List<TimeEvent>> getEvents() async {
-    final Database db = await instance.database;
-    final List<Map<String, dynamic>> events = await db.query('events');
-    // final List<Event> eventList =
-    //     events.isNotEmpty ? events.map((e) => Event.fromMap(e)).toList() : [];
-    final List<TimeEvent> eventList = [];
-    for (final pair in events) {
-      eventList.add(TimeEvent.fromMap(pair));
-    }
-    return eventList;
-  }
-
-  Future<List<TimeEvent>> getTodaysEvents(DateTime day) async {
+  Future<List<TimeEvent>> getTimeEvents(DateTime day) async {
     final Database db = await instance.database;
     final List<Map<String, dynamic>> events = await db.query(
-      'eventsTable',
-      where: 'eventDate = ?',
+      'timeTable',
+      where: 'date = ?',
       whereArgs: [day.toString().split(' ')[0]],
     );
+
+    print(events[0]['color']);
+    print(events[1]['color']);
+
     final List<TimeEvent> eventList = [];
+
     for (final pair in events) {
       eventList.add(TimeEvent.fromMap(pair));
     }
@@ -156,10 +149,10 @@ class DatabaseHelper {
     return sum_;
   }
 
-  Future<int> add(TimeEvent event) async {
+  Future<int> addTimeEvent(TimeEvent event) async {
     final Database db = await instance.database;
     return db.insert(
-      'eventsTable',
+      'timeTable',
       event.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
