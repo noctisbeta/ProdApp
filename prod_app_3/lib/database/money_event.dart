@@ -32,13 +32,13 @@ class MoneyEvent {
         'forWhat': forWhat,
         'color': color.toString(),
         'amount': amount.toString(),
-        'time': time.toString(),
-        'dateTime': dateTime.toString()
+        'time': time.toString().split('(')[1].replaceFirst(')', ''),
+        'date': dateTime.toString().split(' ')[0]
       };
 
   factory MoneyEvent.fromMap(Map<String, dynamic> json) {
     final DateTime dateTime = DateTime.parse(json['date'] as String);
-    final String colorStr = json['eventColor'] as String;
+    final String colorStr = json['color'] as String;
     final List<String> c = colorStr.split(':');
     final String color =
         c[1].substring(c[1].indexOf('(') + 1, c[1].lastIndexOf(')') - 1);

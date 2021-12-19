@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../database/database.dart';
+import '../database/money_event.dart';
+
 class MoneyAddingScreen extends StatefulWidget {
-  const MoneyAddingScreen({Key? key}) : super(key: key);
+  final DateTime dateTime;
+  const MoneyAddingScreen({
+    required this.dateTime,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _MoneyAddingScreenState createState() => _MoneyAddingScreenState();
@@ -11,6 +18,10 @@ class _MoneyAddingScreenState extends State<MoneyAddingScreen> {
   TextEditingController timeCtl = TextEditingController();
   TextEditingController locCtl = TextEditingController();
   TextEditingController forCtl = TextEditingController();
+  TextEditingController amountCtl = TextEditingController();
+  TextEditingController helperCtl = TextEditingController(
+    text: '0€',
+  );
 
   TimeOfDay? time;
 
@@ -41,7 +52,6 @@ class _MoneyAddingScreenState extends State<MoneyAddingScreen> {
                 Expanded(
                   flex: 2,
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
                     controller: forCtl,
                     decoration: const InputDecoration(
                       labelText: 'For What',
@@ -55,6 +65,23 @@ class _MoneyAddingScreenState extends State<MoneyAddingScreen> {
             ),
             Row(
               children: [
+                Expanded(
+                  flex: 2,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    controller: amountCtl,
+                    onChanged: (value) {
+                      setState(() {
+                        helperCtl.text = '$value€';
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Amount',
+                      // hintText: amountCtl.text,
+                      helperText: helperCtl.text,
+                    ),
+                  ),
+                ),
                 const Spacer(),
                 Expanded(
                   flex: 2,
@@ -86,64 +113,62 @@ class _MoneyAddingScreenState extends State<MoneyAddingScreen> {
               ],
             ),
             const Spacer(),
+            TextButton(
+              onPressed: () {
+                if (locCtl.text == '' ||
+                    forCtl.text == '' ||
+                    amountCtl.text == '' ||
+                    time == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      width: 110,
+                      dismissDirection: DismissDirection.vertical,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      content: const Text('Missing info'),
+                    ),
+                  );
+                  return;
+                }
 
-            const Spacer(),
-            // TextButton(
-            //   onPressed: () {
-            //     if (foodCtl.text == '' ||
-            //         calsCtl.text == '' ||
-            //         meal == '' ||
-            //         time == null) {
-            //       ScaffoldMessenger.of(context).showSnackBar(
-            //         SnackBar(
-            //           behavior: SnackBarBehavior.floating,
-            //           width: 110,
-            //           dismissDirection: DismissDirection.vertical,
-            //           shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(10.0),
-            //           ),
-            //           content: const Text('Missing info'),
-            //         ),
-            //       );
-            //       return;
-            //     }
+                final moneyEvent = MoneyEvent(
+                  location: locCtl.text,
+                  forWhat: forCtl.text,
+                  color: Colors.pink,
+                  amount: double.parse(amountCtl.text),
+                  time: time!,
+                  dateTime: widget.dateTime,
+                );
 
-            //     final calorieEvent = CalorieEvent(
-            //       foodName: foodCtl.text,
-            //       foodAmount: foodAmount,
-            //       calories: int.parse(calsCtl.text),
-            //       dateTime: widget.dateTime,
-            //       meal: meal,
-            //       time: time!,
-            //     );
-
-            //     DatabaseHelper.instance.addCalorieEvent(calorieEvent);
-            //     Navigator.pop(context);
-            //   },
-            //   style: ButtonStyle(
-            //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            //       RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(15.0),
-            //         side: BorderSide(
-            //           color: Theme.of(context).colorScheme.primary,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            //   child: Container(
-            //     padding: const EdgeInsets.all(10),
-            //     decoration: BoxDecoration(
-            //       color: Theme.of(context).colorScheme.primary,
-            //       borderRadius: BorderRadius.circular(10),
-            //     ),
-            //     child: const Text(
-            //       'Confirm',
-            //       style: TextStyle(
-            //         fontSize: 20,
-            //       ),
-            //     ),
-            //   ),
-            // ),
+                DatabaseHelper.instance.addMoneyEvent(moneyEvent);
+                Navigator.pop(context);
+              },
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                    side: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Text(
+                  'Confirm',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

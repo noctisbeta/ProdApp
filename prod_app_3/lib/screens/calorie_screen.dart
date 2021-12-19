@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // import 'package:prod_app_3/providers/date_provider.dart';
+// import 'package:prod_app_3/providers/date_provider.dart';
 import 'package:prod_app_3/screens/calorie_adding_screen.dart';
 import '../database/calorie_event.dart';
 import '../database/database.dart';
-import '../widgets/menu_buttons.dart';
 
 class CalorieScreen extends StatefulWidget {
   final DateTime dateTime;
@@ -30,17 +29,19 @@ class _CalorieScreenState extends State<CalorieScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        actions: const [
-          CalendarAppBar(
-            screenName: 'calories',
-          ),
-        ],
-        title: Text(
-          "${DateFormat('EEEE').format(widget.dateTime)}'s Calories",
-        ),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   actions: [
+      //     CalendarAppBar(
+      //       changeDateTime: (x){},
+      //       screenName: 'calories',
+      //       currentDate: widget.dateTime,
+      //     ),
+      //   ],
+      //   title: Text(
+      //     "${DateFormat('EEEE').format(widget.dateTime)}'s Calories",
+      //   ),
+      //   centerTitle: true,
+      // ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {

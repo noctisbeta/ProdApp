@@ -90,7 +90,7 @@ class TimeButton extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) {
                 // return const DaySummaryScreen();
-                return DaySummaryScreen(date: DateTime.now());
+                return DaySummaryScreen(dateTime: DateTime.now());
               },
             ),
           );
@@ -153,8 +153,12 @@ class CalorieButton extends StatelessWidget {
 
 class CalendarAppBar extends StatefulWidget {
   final String screenName;
+  final DateTime currentDate;
+  final Function(DateTime dateTime) changeDateTime;
   const CalendarAppBar({
     required this.screenName,
+    required this.currentDate,
+    required this.changeDateTime,
     Key? key,
   }) : super(key: key);
 
@@ -169,7 +173,7 @@ class _CalendarAppBarState extends State<CalendarAppBar> {
       onPressed: () async {
         final newDate = await showDatePicker(
           context: context,
-          initialDate: DateTime.now(),
+          initialDate: widget.currentDate,
           firstDate: DateTime.parse('2021-12-01'),
           lastDate: DateTime.now().add(
             const Duration(days: 7),
@@ -189,7 +193,7 @@ class _CalendarAppBarState extends State<CalendarAppBar> {
                   );
                 case 'time':
                   return DaySummaryScreen(
-                    date: newDate,
+                    dateTime: newDate,
                   );
                 case 'money':
                   return MoneySummaryScreen(
@@ -205,6 +209,72 @@ class _CalendarAppBarState extends State<CalendarAppBar> {
       icon: const Icon(
         Icons.calendar_today,
       ),
+    );
+  }
+}
+
+class NavBar extends StatefulWidget {
+  final void Function(int index) changeIndex;
+  const NavBar({
+    required this.changeIndex,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<NavBar> createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
+  int _selectedIndex = 1;
+  List<Widget> get buttons => [
+        MoneySummaryScreen(
+          dateTime: DateTime.now(),
+        ),
+        CalorieScreen(
+          dateTime: DateTime.now(),
+        ),
+        DaySummaryScreen(
+          dateTime: DateTime.now(),
+        ),
+      ];
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      onTap: (index) {
+        setState(() {
+          _selectedIndex = index;
+          widget.changeIndex(index);
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     builder: (context) {
+          //       return buttons[_selectedIndex];
+          //     },
+          //   ),
+          // );
+        });
+      },
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          label: 'Money',
+          icon: Icon(
+            Icons.money,
+          ),
+        ),
+        BottomNavigationBarItem(
+          label: 'Time',
+          icon: Icon(
+            Icons.access_time,
+          ),
+        ),
+        BottomNavigationBarItem(
+          label: 'Calories',
+          icon: Icon(
+            Icons.food_bank,
+          ),
+        ),
+      ],
     );
   }
 }

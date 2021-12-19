@@ -33,6 +33,11 @@ class MyApp extends StatelessWidget {
         title: 'Productivity app',
         themeMode: ThemeMode.dark,
         theme: ThemeData().copyWith(
+          bottomNavigationBarTheme:
+              ThemeData().bottomNavigationBarTheme.copyWith(
+                    backgroundColor: const Color(0xFFaef1eb),
+                    unselectedItemColor: Colors.black,
+                  ),
           colorScheme: ThemeData().colorScheme.copyWith(
                 primary: const Color(0xFFF2AEB4),
                 secondary: const Color(0xFFaef1eb),

@@ -65,8 +65,9 @@ class DatabaseHelper {
       location TEXT NOT NULL,
       forWhat TEXT NOT NULL,
       color TEXT NOT NULL,
+      amount REAL NOT NULL,
       time TEXT NOT NULL,
-      dateTime TEXT NOT NULL
+      date TEXT NOT NULL
     );
     ''',
     );
@@ -169,6 +170,15 @@ class DatabaseHelper {
     return db.insert(
       'calorieTable',
       calorieEvent.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<int> addMoneyEvent(MoneyEvent moneyEvent) async {
+    final Database db = await instance.database;
+    return db.insert(
+      'moneyTable',
+      moneyEvent.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }

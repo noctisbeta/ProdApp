@@ -53,6 +53,8 @@ dependencies:
 
   quiver: ^3.0.1+1
 
+  sliding_number: ^0.0.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
