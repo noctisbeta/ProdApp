@@ -111,20 +111,12 @@ class _TimeAddingPageState extends State<TimeAddingPage> {
                 Column(
                   children: [
                     myColorPicker(),
-                    if (isOkayColor())
-                      Text(
-                        'Event color',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      )
-                    else
-                      Text(
-                        'Color already used',
-                        style: TextStyle(
-                          color: Theme.of(context).errorColor,
-                        ),
+                    Text(
+                      'Event color',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
                       ),
+                    )
                   ],
                 ),
                 const Spacer(),
@@ -204,6 +196,13 @@ class _TimeAddingPageState extends State<TimeAddingPage> {
       return;
     }
 
+    // for (final e in widget.events) {
+    //   if (e.title == nameCtl.text) {
+    //     currentColor = e.color;
+    //     break;
+    //   }
+    // }
+
     final TimeEvent newEvent = TimeEvent(
       title: nameCtl.text,
       from: fromTime!,
@@ -230,22 +229,21 @@ class _TimeAddingPageState extends State<TimeAddingPage> {
           isOkay = true;
           return null;
         } else {
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
-            changeColor(widget.events[i].color);
+          // WidgetsBinding.instance?.addPostFrameCallback((_) {
+          changeColor(widget.events[i].color);
 
-            const snackBar = SnackBar(
-              content: Text(
-                'Changed color to match name',
-                textAlign: TextAlign.center,
-              ),
-              backgroundColor: Colors.grey,
-              duration: Duration(seconds: 5),
-              elevation: 100,
-              shape: StadiumBorder(),
-              behavior: SnackBarBehavior.floating,
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          });
+          final snackBar = SnackBar(
+            content: const Text(
+              'Changed color to match name',
+              textAlign: TextAlign.center,
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            duration: const Duration(seconds: 3),
+            shape: const StadiumBorder(),
+            behavior: SnackBarBehavior.floating,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          // });
         }
         isOkay = true;
         return null;

@@ -81,9 +81,6 @@ class DatabaseHelper {
       whereArgs: [day.toString().split(' ')[0]],
     );
 
-    print(events[0]['color']);
-    print(events[1]['color']);
-
     final List<TimeEvent> eventList = [];
 
     for (final pair in events) {

@@ -53,7 +53,12 @@ class _TimeSummaryScreenState extends State<TimeSummaryScreen> {
                       ),
                     ),
                     if (snapshot.hasData && snapshot.data!.isNotEmpty)
-                      ...snapshot.data!.map((e) => Arc(event: e)),
+                      ...snapshot.data!.map(
+                        (e) => Arc(
+                          event: e,
+                          events: snapshot.data!,
+                        ),
+                      ),
                     SizedBox(
                       height: 100,
                       width: 100,
@@ -73,7 +78,8 @@ class _TimeSummaryScreenState extends State<TimeSummaryScreen> {
                     runSpacing: 10,
                     children: [
                       if (snapshot.hasData && snapshot.data!.isNotEmpty)
-                        ...snapshot.data!.map((e) => LegendEntry(event: e))
+                        // ...snapshot.data!.map((e) => LegendEntry(event: e))
+                        ...getLegend(snapshot.data!),
                     ],
                   ),
                 ),
@@ -104,6 +110,16 @@ class _TimeSummaryScreenState extends State<TimeSummaryScreen> {
       ),
     );
   }
+}
+
+List<Widget> getLegend(List<TimeEvent> events) {
+  final Map<String, TimeEvent> nameEvent = {};
+
+  for (final e in events) {
+    nameEvent.putIfAbsent(e.title, () => e);
+  }
+
+  return nameEvent.values.map((e) => LegendEntry(event: e)).toList();
 }
 
 class LegendEntry extends StatelessWidget {
@@ -196,10 +212,14 @@ class TimePointerPainter extends CustomPainter {
 }
 
 class ArcPainter extends CustomPainter {
-  TimeEvent event;
+  final TimeEvent event;
   final Path path = Path();
+  final List<TimeEvent> events;
 
-  ArcPainter({required this.event});
+  ArcPainter({
+    required this.event,
+    required this.events,
+  });
 
   @override
   bool hitTest(Offset position) {
@@ -232,6 +252,15 @@ class ArcPainter extends CustomPainter {
     final Rect rect =
         Rect.fromCenter(center: center, width: rectSize, height: rectSize);
 
+    for (final e in events) {
+      if (e == event || e.title != event.title) {
+        continue;
+      }
+      if (event.to == e.from) {
+        // radEnd += 1;
+      }
+    }
+
     canvas.drawArc(rect, radStart, radEnd, false, fillBrush);
 
     path.reset();
@@ -262,7 +291,12 @@ class ArcPainter extends CustomPainter {
 
 class Arc extends StatefulWidget {
   final TimeEvent event;
-  const Arc({required this.event, Key? key}) : super(key: key);
+  final List<TimeEvent> events;
+  const Arc({
+    required this.event,
+    required this.events,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _ArcState createState() => _ArcState();
@@ -275,7 +309,7 @@ class _ArcState extends State<Arc> {
       height: 100,
       width: 100,
       child: CustomPaint(
-        painter: ArcPainter(event: widget.event),
+        painter: ArcPainter(event: widget.event, events: widget.events),
       ),
     );
   }
