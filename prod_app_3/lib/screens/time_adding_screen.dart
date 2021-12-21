@@ -120,11 +120,18 @@ class _TimeAddingPageState extends State<TimeAddingPage> {
                   ],
                 ),
                 const Spacer(),
+                Expanded(
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: widget.events.map((e) => presetItem(e)).toList(),
+                  ),
+                ),
+                const Spacer(),
                 Center(
                   child: TextButton(
                     onPressed: confirmSubmission,
                     child: const Text(
-                      'CONFIRM',
+                      'Confirm',
                     ),
                   ),
                 ),
@@ -133,6 +140,26 @@ class _TimeAddingPageState extends State<TimeAddingPage> {
           ),
         ),
       );
+
+  Widget presetItem(TimeEvent event) {
+    return GestureDetector(
+      onTap: () {
+        nameCtl.text = event.title;
+        changeColor(event.color);
+      },
+      child: FittedBox(
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: event.color,
+          ),
+          child: Text(event.title),
+        ),
+      ),
+    );
+  }
 
   Future<void> pickTime(String choice) async {
     final TimeOfDay? newTime = await showTimePicker(
