@@ -53,10 +53,9 @@ class _TimeSummaryScreenState extends State<TimeSummaryScreen> {
                       ),
                     ),
                     if (snapshot.hasData && snapshot.data!.isNotEmpty)
-                      ...snapshot.data!.map(
+                      ...fixedEvents(snapshot.data!).map(
                         (e) => Arc(
                           event: e,
-                          events: snapshot.data!,
                         ),
                       ),
                     SizedBox(
@@ -110,6 +109,50 @@ class _TimeSummaryScreenState extends State<TimeSummaryScreen> {
       ),
     );
   }
+}
+
+List<TimeEvent> fixedEvents(List<TimeEvent> events) {
+  // final List<TimeEvent> fixedList = [];
+  final List<TimeEvent> events2 = events;
+  // final Map<TimeEvent, TimeEvent> sosednji = {};
+
+  for (int k = 0; k < events2.length; k++) {
+    for (int i = 0; i < events2.length; i++) {
+      for (int j = i + 1; j < events2.length; j++) {
+        if (events2[i].title == events2[j].title &&
+            (events2[i].to == events2[j].from)) {
+          final TimeEvent ei = events2[i];
+          final TimeEvent ej = events2[j];
+          final TimeEvent newEvent = TimeEvent(
+            color: events2[i].color,
+            title: events2[i].title,
+            from: events2[i].from,
+            to: events2[j].to,
+            dateTime: events2[i].dateTime,
+          );
+          events2.add(newEvent);
+          events2.remove(ei);
+          events2.remove(ej);
+        } else if (events2[i].title == events2[j].title &&
+            events2[j].to == events2[i].from) {
+          final TimeEvent ei = events2[i];
+          final TimeEvent ej = events2[j];
+          final TimeEvent newEvent = TimeEvent(
+            color: events2[i].color,
+            title: events2[i].title,
+            from: events2[j].from,
+            to: events2[i].to,
+            dateTime: events2[i].dateTime,
+          );
+          events2.add(newEvent);
+          events2.remove(ei);
+          events2.remove(ej);
+        }
+      }
+    }
+  }
+
+  return events2;
 }
 
 List<Widget> getLegend(List<TimeEvent> events) {
@@ -214,18 +257,10 @@ class TimePointerPainter extends CustomPainter {
 class ArcPainter extends CustomPainter {
   final TimeEvent event;
   final Path path = Path();
-  final List<TimeEvent> events;
 
   ArcPainter({
     required this.event,
-    required this.events,
   });
-
-  @override
-  bool hitTest(Offset position) {
-    final bool hit = path.contains(position);
-    return hit;
-  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -252,16 +287,13 @@ class ArcPainter extends CustomPainter {
     final Rect rect =
         Rect.fromCenter(center: center, width: rectSize, height: rectSize);
 
-    for (final e in events) {
-      if (e == event || e.title != event.title) {
-        continue;
-      }
-      if (event.to == e.from) {
-        // radEnd += 1;
-      }
-    }
-
-    canvas.drawArc(rect, radStart, radEnd, false, fillBrush);
+    canvas.drawArc(
+      rect,
+      radStart,
+      radEnd,
+      false,
+      fillBrush,
+    );
 
     path.reset();
     path.moveTo(centerX, centerY);
@@ -291,10 +323,8 @@ class ArcPainter extends CustomPainter {
 
 class Arc extends StatefulWidget {
   final TimeEvent event;
-  final List<TimeEvent> events;
   const Arc({
     required this.event,
-    required this.events,
     Key? key,
   }) : super(key: key);
 
@@ -309,7 +339,9 @@ class _ArcState extends State<Arc> {
       height: 100,
       width: 100,
       child: CustomPaint(
-        painter: ArcPainter(event: widget.event, events: widget.events),
+        painter: ArcPainter(
+          event: widget.event,
+        ),
       ),
     );
   }

@@ -123,7 +123,10 @@ class _TimeAddingPageState extends State<TimeAddingPage> {
                 Expanded(
                   child: ListView(
                     scrollDirection: Axis.horizontal,
-                    children: widget.events.map((e) => presetItem(e)).toList(),
+                    // children: widget.events.map((e) => presetItem(e)).toList(),
+                    children: differentPresets(widget.events)
+                        .map((s) => presetItem(s))
+                        .toList(),
                   ),
                 ),
                 const Spacer(),
@@ -140,6 +143,19 @@ class _TimeAddingPageState extends State<TimeAddingPage> {
           ),
         ),
       );
+
+  List<TimeEvent> differentPresets(List<TimeEvent> events) {
+    final Map<String, Color> pairs = {};
+    for (final e in events) {
+      pairs.putIfAbsent(e.title, () => e.color);
+    }
+    print(events.toSet());
+    return events
+        .toSet()
+        .where((e) => pairs.containsKey(e.title))
+        .toSet()
+        .toList();
+  }
 
   Widget presetItem(TimeEvent event) {
     return GestureDetector(

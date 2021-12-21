@@ -55,6 +55,8 @@ dependencies:
 
   sliding_number: ^0.0.4
 
+  touchable: ^1.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
