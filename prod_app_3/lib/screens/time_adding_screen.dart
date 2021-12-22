@@ -145,16 +145,21 @@ class _TimeAddingPageState extends State<TimeAddingPage> {
       );
 
   List<TimeEvent> differentPresets(List<TimeEvent> events) {
-    final Map<String, Color> pairs = {};
+    final Set<TimeEvent> presets = {};
+    bool flag = false;
     for (final e in events) {
-      pairs.putIfAbsent(e.title, () => e.color);
+      flag = false;
+      for (final f in presets) {
+        if (f.title == e.title) {
+          flag = true;
+          break;
+        }
+      }
+      if (!flag) {
+        presets.add(e);
+      }
     }
-    print(events.toSet());
-    return events
-        .toSet()
-        .where((e) => pairs.containsKey(e.title))
-        .toSet()
-        .toList();
+    return presets.toList();
   }
 
   Widget presetItem(TimeEvent event) {
