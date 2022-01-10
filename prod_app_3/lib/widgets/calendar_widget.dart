@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 // import 'package:flutter/foundation.dart';
 // import 'dart:developer';
-import '../screens/time_summary_screen.dart';
+import '../screens/time_screens/time_summary_screen.dart';
 
 class CalendarWidget extends StatelessWidget {
   @override

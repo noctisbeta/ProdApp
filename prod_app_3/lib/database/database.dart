@@ -67,7 +67,8 @@ class DatabaseHelper {
       color TEXT NOT NULL,
       amount REAL NOT NULL,
       time TEXT NOT NULL,
-      date TEXT NOT NULL
+      date TEXT NOT NULL,
+      month INTEGER NOT NULL
     );
     ''',
     );
@@ -122,6 +123,20 @@ class DatabaseHelper {
       'moneyTable',
       where: 'date = ?',
       whereArgs: [day.toString().split(' ')[0]],
+    );
+    final List<MoneyEvent> eventList = [];
+    for (final pair in events) {
+      eventList.add(MoneyEvent.fromMap(pair));
+    }
+    return eventList;
+  }
+
+  Future<List<MoneyEvent>> getMoneyEventsMonth(DateTime dateTime) async {
+    final Database db = await instance.database;
+    final List<Map<String, dynamic>> events = await db.query(
+      'moneyTable',
+      where: 'month = ?',
+      whereArgs: [dateTime.month],
     );
     final List<MoneyEvent> eventList = [];
     for (final pair in events) {

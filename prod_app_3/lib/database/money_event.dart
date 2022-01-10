@@ -33,7 +33,8 @@ class MoneyEvent {
         'color': color.toString(),
         'amount': amount.toString(),
         'time': time.toString().split('(')[1].replaceFirst(')', ''),
-        'date': dateTime.toString().split(' ')[0]
+        'date': dateTime.toString().split(' ')[0],
+        'month': dateTime.month,
       };
 
   factory MoneyEvent.fromMap(Map<String, dynamic> json) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../database/database.dart';
-import '../database/money_event.dart';
+import '../../database/database.dart';
+import '../../database/money_event.dart';
 
 class MoneyAddingScreen extends StatefulWidget {
   final DateTime dateTime;
@@ -75,10 +75,10 @@ class _MoneyAddingScreenState extends State<MoneyAddingScreen> {
                         helperCtl.text = '$value€';
                       });
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Amount',
                       // hintText: amountCtl.text,
-                      helperText: helperCtl.text,
+                      // helperText: helperCtl.text,
                     ),
                   ),
                 ),

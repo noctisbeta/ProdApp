@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:prod_app_3/database/database.dart';
 
-import '../database/database.dart';
-import '../database/time_event.dart';
+import '../../database/database.dart';
+import '../../database/time_event.dart';
 
 class TimeAddingPage extends StatefulWidget {
   final DateTime selectedDate;

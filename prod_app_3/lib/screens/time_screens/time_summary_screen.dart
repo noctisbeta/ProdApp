@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:prod_app_3/database/database.dart';
 
-import '../database/time_event.dart';
+import '../../database/time_event.dart';
 import 'time_adding_screen.dart';
 
 class TimeSummaryScreen extends StatefulWidget {

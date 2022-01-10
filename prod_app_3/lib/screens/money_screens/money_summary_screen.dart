@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:prod_app_3/screens/money_crypto_screen.dart';
+import 'package:intl/intl.dart';
+import 'package:prod_app_3/screens/money_screens/money_month_summary_screen.dart';
 
-import '../database/database.dart';
-import '../database/money_event.dart';
+import '../../database/database.dart';
+import '../../database/money_event.dart';
 import 'money_adding_screen.dart';
+import 'money_crypto_screen.dart';
 
 class MoneySummaryScreen extends StatefulWidget {
   final DateTime dateTime;
+  final void Function({String? titleDate, String? titleType})
+      changeTitleCallback;
+
   const MoneySummaryScreen({
     required this.dateTime,
+    required this.changeTitleCallback,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +33,29 @@ class _MoneySummaryScreenState extends State<MoneySummaryScreen> {
   Widget build(BuildContext context) {
     return PageView(
       controller: pageCtl,
+      // onPageChanged: (index) {},
+      onPageChanged: (index) {
+        switch (index) {
+          case 0:
+            widget.changeTitleCallback(
+              titleDate: DateFormat('EEEE').format(widget.dateTime),
+              titleType: "'s Money",
+            );
+            break;
+          case 1:
+            widget.changeTitleCallback(
+              titleDate: DateFormat.MMMM().format(widget.dateTime),
+              titleType: "'s Money",
+            );
+            break;
+          case 2:
+            widget.changeTitleCallback(
+              titleDate: '',
+              titleType: 'Crypto',
+            );
+            break;
+        }
+      },
       children: [
         Scaffold(
           floatingActionButton: FloatingActionButton(
@@ -50,25 +79,34 @@ class _MoneySummaryScreenState extends State<MoneySummaryScreen> {
           ),
           body: Column(
             children: [
-              Expanded(
-                flex: 2,
+              SizedBox(
+                height: 120,
                 child: Container(
                   margin: const EdgeInsets.all(20),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(50),
                     color: Theme.of(context).colorScheme.primary,
                   ),
-                  child: Align(
+                  child: Center(
                     child: FutureBuilder<List<MoneyEvent>>(
                       future: getEvents(),
                       builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const SizedBox.shrink();
+                        }
+                        if (!snapshot.hasData) {
+                          return const SizedBox.shrink();
+                        }
                         double sum_ = 0;
                         for (final e in snapshot.data!) {
                           sum_ += e.amount;
                         }
                         return Text(
                           '$sum_€',
+                          style: const TextStyle(
+                            fontSize: 25,
+                          ),
                         );
                       },
                     ),
@@ -84,6 +122,9 @@ class _MoneySummaryScreenState extends State<MoneySummaryScreen> {
                       return ListView.builder(
                         itemCount: snapshot.data?.length,
                         itemBuilder: (context, index) {
+                          if (snapshot.data!.isEmpty) {
+                            return const SizedBox.shrink();
+                          }
                           return Container(
                             margin: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                             padding: const EdgeInsets.all(15),
@@ -122,8 +163,8 @@ class _MoneySummaryScreenState extends State<MoneySummaryScreen> {
             ],
           ),
         ),
-        const Scaffold(
-          body: Text('a'),
+        MoneyMonthSummaryScreen(
+          dateTime: widget.dateTime,
         ),
         const CryptoScreen(),
       ],

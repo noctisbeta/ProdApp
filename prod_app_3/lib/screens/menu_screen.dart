@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:prod_app_3/screens/calorie_screen.dart';
-import 'package:prod_app_3/screens/money_summary_screen.dart';
-import 'package:prod_app_3/screens/time_summary_screen.dart';
 
-import '../widgets/menu_buttons.dart';
+import 'money_screens/money_summary_screen.dart';
+import 'time_screens/time_summary_screen.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -14,13 +13,27 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  int _currentIndex = 1;
   String _titleDate = DateFormat('EEEE').format(DateTime.now());
   String _titleType = 'Time';
   DateTime _currentDate = DateTime.now();
-  final List<Widget> _screens = [
+
+  void _updateTitle({String? titleDate, String? titleType}) {
+    setState(() {
+      if (titleType != null) {
+        _titleType = titleType;
+      }
+      if (titleDate != null) {
+        _titleDate = titleDate;
+      }
+    });
+  }
+
+  int _selectedNavBarIndex = 1;
+
+  late final List<Widget> _screens = [
     MoneySummaryScreen(
       dateTime: DateTime.now(),
+      changeTitleCallback: _updateTitle,
     ),
     TimeSummaryScreen(
       dateTime: DateTime.now(),
@@ -33,35 +46,61 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: NavBar(
-        changeIndex: (index) {
-          setState(() {
-            _currentIndex = index;
-            switch (index) {
-              case 0:
-                _titleType = 'Money';
-                break;
-              case 1:
-                _titleType = 'Time';
-                break;
-              case 2:
-                _titleType = 'Calories';
-                break;
-            }
-          });
-        },
-      ),
+      bottomNavigationBar: _buildNavBar(),
       appBar: _buildAppBar(),
       body: IndexedStack(
-        index: _currentIndex,
+        index: _selectedNavBarIndex,
         children: _screens,
       ),
     );
   }
 
+  BottomNavigationBar _buildNavBar() {
+    return BottomNavigationBar(
+      currentIndex: _selectedNavBarIndex,
+      onTap: (index) {
+        setState(() {
+          _selectedNavBarIndex = index;
+
+          switch (_selectedNavBarIndex) {
+            case 0:
+              _titleType = "'s Money";
+              break;
+            case 1:
+              _titleType = "'s Time";
+              break;
+            case 2:
+              _titleType = "'s Calories";
+              break;
+          }
+        });
+      },
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          label: 'Money',
+          icon: Icon(
+            Icons.money,
+          ),
+        ),
+        BottomNavigationBarItem(
+          label: 'Time',
+          icon: Icon(
+            Icons.access_time,
+          ),
+        ),
+        BottomNavigationBarItem(
+          label: 'Calories',
+          icon: Icon(
+            Icons.food_bank,
+          ),
+        ),
+      ],
+    );
+  }
+
   AppBar _buildAppBar() {
     return AppBar(
-      title: Text("$_titleDate's $_titleType"),
+      title: Text("$_titleDate$_titleType"),
       centerTitle: true,
       actions: [
         IconButton(
@@ -81,9 +120,12 @@ class _MenuScreenState extends State<MenuScreen> {
               _titleDate = DateFormat('EEEE').format(newDate);
               _currentDate = newDate;
               final Widget newScreen;
-              switch (_currentIndex) {
+              switch (_selectedNavBarIndex) {
                 case 0:
-                  newScreen = MoneySummaryScreen(dateTime: newDate);
+                  newScreen = MoneySummaryScreen(
+                    dateTime: newDate,
+                    changeTitleCallback: _updateTitle,
+                  );
                   break;
                 case 1:
                   newScreen = TimeSummaryScreen(dateTime: newDate);
@@ -94,7 +136,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 default:
                   newScreen = const SizedBox.shrink();
               }
-              _screens[_currentIndex] = newScreen;
+              _screens[_selectedNavBarIndex] = newScreen;
             });
           },
           icon: const Icon(
